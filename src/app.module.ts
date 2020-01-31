@@ -5,7 +5,7 @@ import { Connection } from 'typeorm';
 @Module({
   imports: [TypeOrmModule.forRoot()],
   controllers: [],
-  providers: [],
+  providers: []
 })
 export class AppModule {
   constructor(private readonly connection: Connection) {}
