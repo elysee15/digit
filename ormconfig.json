@@ -8,7 +8,7 @@
   "logging": true,
   "logger": "file",
   "synchronize": false,
-  "entities": ["dist/**/*.entity{.ts,.js}"],
+  "entities": ["src/**/*.entity{.ts,.js}"],
   "migrationsTableName": "migrations",
   "migrations": ["src/migrations/**/*.ts"],
   "cli": {
