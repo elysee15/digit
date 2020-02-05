@@ -1,7 +1,8 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Connection } from 'typeorm';
+import {Module} from '@nestjs/common';
+import {TypeOrmModule} from '@nestjs/typeorm';
+import {Connection} from 'typeorm';
 import {ConfigModule} from '@nestjs/config';
+import {AuthModule} from './module/auth/auth.module';
 
 @Module({
   imports: [
@@ -9,7 +10,8 @@ import {ConfigModule} from '@nestjs/config';
       ConfigModule.forRoot({
           isGlobal: true,
           expandVariables: true,
-      })
+      }),
+      AuthModule
   ],
   controllers: [],
   providers: []
