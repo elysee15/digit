@@ -13,6 +13,9 @@ import { ProjetDeMissionModule } from './module/projet-de-mission/projet-de-miss
 import { FamilleDeMissionModule } from './module/famille-de-mission/famille-de-mission.module';
 import { PieceJointeMissionModule } from './module/piece-jointe-mission/piece-jointe-mission.module';
 import { OffreDeMissionModule } from './module/offre-de-mission/offre-de-mission.module';
+import { ProspectModule } from './module/prospect/prospect.module';
+import { ProspectionModule } from './module/prospection/prospection.module';
+import { QuestionnaireModule } from './module/questionnaire/questionnaire.module';
 
 @Module({
   imports: [
@@ -21,7 +24,7 @@ import { OffreDeMissionModule } from './module/offre-de-mission/offre-de-mission
           isGlobal: true,
           expandVariables: true,
       }),
-      AuthModule, AnnexeModule, PlaningModule, BudgetModule, CategorieModule, QuestionModule,ProjetDeMissionModule, ManagerModule, FamilleDeMissionModule, PieceJointeMissionModule, OffreDeMissionModule
+      AuthModule, AnnexeModule, PlaningModule, BudgetModule, CategorieModule, QuestionModule,ProjetDeMissionModule, ManagerModule, FamilleDeMissionModule, PieceJointeMissionModule, OffreDeMissionModule, ProspectModule, ProspectionModule, QuestionnaireModule
   ],
   controllers: [],
   providers: []
