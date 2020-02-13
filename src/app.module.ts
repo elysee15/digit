@@ -10,6 +10,9 @@ import { CategorieModule } from './module/categorie/categorie.module';
 import { QuestionModule } from './module/question/question.module';
 import { ManagerModule } from './module/manager/manager.module';
 import { ProjetDeMissionModule } from './module/projet-de-mission/projet-de-mission.module';
+import { FamilleDeMissionModule } from './module/famille-de-mission/famille-de-mission.module';
+import { PieceJointeMissionModule } from './module/piece-jointe-mission/piece-jointe-mission.module';
+import { OffreDeMissionModule } from './module/offre-de-mission/offre-de-mission.module';
 
 @Module({
   imports: [
@@ -18,7 +21,7 @@ import { ProjetDeMissionModule } from './module/projet-de-mission/projet-de-miss
           isGlobal: true,
           expandVariables: true,
       }),
-      AuthModule, AnnexeModule, PlaningModule, BudgetModule, CategorieModule, QuestionModule,ProjetDeMissionModule, ManagerModule
+      AuthModule, AnnexeModule, PlaningModule, BudgetModule, CategorieModule, QuestionModule,ProjetDeMissionModule, ManagerModule, FamilleDeMissionModule, PieceJointeMissionModule, OffreDeMissionModule
   ],
   controllers: [],
   providers: []
