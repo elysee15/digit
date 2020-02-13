@@ -16,6 +16,7 @@ import { OffreDeMissionModule } from './module/offre-de-mission/offre-de-mission
 import { ProspectModule } from './module/prospect/prospect.module';
 import { ProspectionModule } from './module/prospection/prospection.module';
 import { QuestionnaireModule } from './module/questionnaire/questionnaire.module';
+import { PieceJointeQuestionModule } from './module/piece-jointe-question/piece-jointe-question.module';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { QuestionnaireModule } from './module/questionnaire/questionnaire.module
           isGlobal: true,
           expandVariables: true,
       }),
-      AuthModule, AnnexeModule, PlaningModule, BudgetModule, CategorieModule, QuestionModule,ProjetDeMissionModule, ManagerModule, FamilleDeMissionModule, PieceJointeMissionModule, OffreDeMissionModule, ProspectModule, ProspectionModule, QuestionnaireModule
+      AuthModule, AnnexeModule, PlaningModule, BudgetModule, CategorieModule, QuestionModule,ProjetDeMissionModule, ManagerModule, FamilleDeMissionModule, PieceJointeMissionModule, OffreDeMissionModule, ProspectModule, ProspectionModule, QuestionnaireModule, PieceJointeQuestionModule
   ],
   controllers: [],
   providers: []
