@@ -7,6 +7,9 @@ import { AnnexeModule } from './module/annexe/annexe.module';
 import { PlaningModule } from './module/planing/planing.module';
 import { BudgetModule } from './module/budget/budget.module';
 import { CategorieModule } from './module/categorie/categorie.module';
+import { QuestionModule } from './module/question/question.module';
+import { ManagerModule } from './module/manager/manager.module';
+import { ProjetDeMissionModule } from './module/projet-de-mission/projet-de-mission.module';
 
 @Module({
   imports: [
@@ -15,7 +18,7 @@ import { CategorieModule } from './module/categorie/categorie.module';
           isGlobal: true,
           expandVariables: true,
       }),
-      AuthModule, AnnexeModule, PlaningModule, BudgetModule, CategorieModule
+      AuthModule, AnnexeModule, PlaningModule, BudgetModule, CategorieModule, QuestionModule,ProjetDeMissionModule, ManagerModule
   ],
   controllers: [],
   providers: []
