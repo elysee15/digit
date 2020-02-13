@@ -3,6 +3,7 @@ import {TypeOrmModule} from '@nestjs/typeorm';
 import {Connection} from 'typeorm';
 import {ConfigModule} from '@nestjs/config';
 import {AuthModule} from './module/auth/auth.module';
+import { AnnexeModule } from './module/annexe/annexe.module';
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import {AuthModule} from './module/auth/auth.module';
           isGlobal: true,
           expandVariables: true,
       }),
-      AuthModule
+      AuthModule, AnnexeModule
   ],
   controllers: [],
   providers: []
