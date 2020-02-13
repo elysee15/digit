@@ -4,6 +4,9 @@ import {Connection} from 'typeorm';
 import {ConfigModule} from '@nestjs/config';
 import {AuthModule} from './module/auth/auth.module';
 import { AnnexeModule } from './module/annexe/annexe.module';
+import { PlaningModule } from './module/planing/planing.module';
+import { BudgetModule } from './module/budget/budget.module';
+import { CategorieModule } from './module/categorie/categorie.module';
 
 @Module({
   imports: [
@@ -12,7 +15,7 @@ import { AnnexeModule } from './module/annexe/annexe.module';
           isGlobal: true,
           expandVariables: true,
       }),
-      AuthModule, AnnexeModule
+      AuthModule, AnnexeModule, PlaningModule, BudgetModule, CategorieModule
   ],
   controllers: [],
   providers: []
