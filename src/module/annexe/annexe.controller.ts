@@ -22,7 +22,7 @@ export class AnnexeController {
     constructor(
         private readonly annexeService : AnnexeService
     ){}
-
+//commentaire
     @Get()
     public async getAllAnnexe(){
         const famille = await this.annexeService.getAll();
