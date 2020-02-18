@@ -17,53 +17,42 @@ import { JsonView } from 'src/helpers/utils/JsonView';
 import { AnnexeService } from './annexe.service';
 import { AnnexeEntity } from './annexe.entity';
 
-@Controller('annexe')
+@Controller('annexes')
 export class AnnexeController {
     constructor(
         private readonly annexeService : AnnexeService
     ){}
-//commentaire
+
     @Get()
     public async getAllAnnexe(){
         const famille = await this.annexeService.getAll();
-        return JsonView.dataResponse(famille, "Liste des annexes", HttpStatus.OK);
+        return JsonView.dataResponse(famille, "Object was found with success", HttpStatus.OK);
     }
 
     @Get(':id')
     public async getAnnexeById(@Param('id', ParseIntPipe) id: number){
         const annexe = await this.annexeService.getById(id);
-        if (annexe){
-            return JsonView.dataResponse(annexe, "", HttpStatus.OK);
-        }
-        throw new NotFoundException("Cet annexe n'existe pas");
+        return JsonView.dataResponse(annexe, "Object was successfully found", HttpStatus.OK);
     }
 
     @Post()
-    public async postAnnexe(@Body() annexeDto){
-        const annexe = await this.annexeService.creating(annexeDto);
+    public async postAnnexe(@Body() data){
+        const annexe = await this.annexeService.creating(data);
         if (annexe){
-            return JsonView.dataResponse(annexe, "L'annexe a été enregistré avec succès", HttpStatus.OK);
+            return JsonView.dataResponse(data, "Object was record successfully", HttpStatus.CREATED);
         }
-        throw new HttpException("Enregistrement impossible, veuillez réessayer", HttpStatus.NOT_MODIFIED);
+        throw new HttpException("Cannot record, try again", HttpStatus.NOT_MODIFIED);
     }
 
     @Put(':id')
-    public async updateAnnexe(@Param('id', ParseIntPipe) id: number, @Body() annexeDto: AnnexeEntity){
-        const annexe = await this.annexeService.updating(id, annexeDto);
-        if (annexe){
-            return JsonView.dataResponse(annexe, "L'annexe a été modifié avec succès", HttpStatus.OK);
-        }
-        throw new NotFoundException("Modification impossible car annexe inexistant");
+    public async updateAnnexe(@Param('id', ParseIntPipe) id: number, @Body() data: AnnexeEntity){
+        const annexe = await this.annexeService.updating(id, data);
+        return JsonView.dataResponse(annexe, "Object was succcessfully modified", HttpStatus.OK);
     }
 
     @Delete(':id')
     public async deleteAnnexe(@Param('id', ParseIntPipe) id: number){
         const annexe = await this.annexeService.deleting(id);
-        if (annexe){
-            return "Annexe supprimé";
+        return JsonView.dataResponse(annexe, "Object was succcessfully deleted", HttpStatus.OK)        
         }
-        throw new NotFoundException("Suppression impossible car annexe inexistant");
-    }
-
-    
 }

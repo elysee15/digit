@@ -16,20 +16,20 @@ export class AnnexeService {
         if (annexe){
             return annexe;
         }
-        return null;
+        throw new NotFoundException("Cet annexe n'existe pas");
     }
 
-    async creating(annexeDto){
-        return await this.annexeRepository.created(annexeDto);
+    async creating(annexe){
+        return await this.annexeRepository.created(annexe);
     }
 
-    async updating(annexeId, annexeDto){
+    async updating(annexeId, data){
         const annexe = await this.annexeRepository.findById(annexeId);
         if (annexe){
-            await this.annexeRepository.updated(annexeId, annexeDto);
+            await this.annexeRepository.updated(annexeId, data);
             return annexe;
         }
-        return null;
+        throw new NotFoundException("Impossible to update because it does not exist");
     }
 
     async deleting(id){
@@ -41,6 +41,6 @@ export class AnnexeService {
                 throw new InternalServerErrorException("Impossible de supprimer car cet annexe est en cours d'utilisation");
             }
         }
-        return null;
+        throw new NotFoundException("impossible to delete because it does not exist");;
     }
 }
