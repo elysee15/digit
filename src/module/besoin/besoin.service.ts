@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { BesoinRepository } from './besoin.repository';
 
 @Injectable()
@@ -16,24 +16,24 @@ export class BesoinService {
         if (besoin){
             return besoin;
         }
-        return null;
+        throw new NotFoundException("Object does not exist");
     }
 
     async findCount(){
         return this.besoinRepository.countBesoin();
     }
 
-    async creating(besoinDto){
-        return await this.besoinRepository.created(besoinDto);
+    async creating(data){
+        return await this.besoinRepository.created(data);
     }
 
-    async updating(besoinId, besoinDto){
+    async updating(besoinId, data){
         const besoin = await this.besoinRepository.findById(besoinId);
         if (besoin){
-            await this.besoinRepository.updated(besoinId, besoinDto);
+            await this.besoinRepository.updated(besoinId, data);
             return besoin;
         }
-        return null;
+        throw new NotFoundException("Impossible to update, object does not exist");
     }
 
     async deleting(besoinId){
@@ -45,6 +45,6 @@ export class BesoinService {
                 throw new InternalServerErrorException("Impossible de supprimer car ce besoin est en cours d'utilisation");
             }
         }
-        return null;
+        throw new NotFoundException("Impossible to delete, object does not exist");
     }
 }

@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from "typeorm"
+import { IsString } from "class-validator";
 
 @Entity('annexe')
 export class AnnexeEntity{
@@ -6,7 +7,8 @@ export class AnnexeEntity{
     @PrimaryGeneratedColumn()
     private id: number;
 
-    @Column({ type: "varchar",length: 100, nullable: true })
+    @IsString()
+    @Column({ type: "varchar",length: 191, nullable: true })
     private libelle: string;
 
     @CreateDateColumn({name: "created_at", nullable: true})
@@ -15,9 +17,11 @@ export class AnnexeEntity{
     @CreateDateColumn({name: "updated_at", nullable: true})
     private updatedAt: Date;
 
+    @IsString()
     @Column({name: "created_by", type: "varchar", length: 100, nullable: true})
     private createdBy: string;
 
+    @IsString()
     @Column({name: "updated_by",type: "varchar", length: 100, nullable: true})
     private updatedBy: string;
 

@@ -4,6 +4,7 @@ import { Priorite } from "./besoin.priorite";
 import { ProspectionEntity } from "../prospection/prospection.entity";
 import { FamilleDeMissionEntity } from "../famille-de-mission/famille-de-mission.entity";
 import { ProjetDeMissionEntity } from "../projet-de-mission/projet-de-mission.entity";
+import { IsString, IsEnum } from "class-validator";
 
 @Entity('besoin')
 export class BesoinEntity{
@@ -11,21 +12,27 @@ export class BesoinEntity{
     @PrimaryGeneratedColumn()
     private id: number;
 
+    @IsString()
     @Column({ type: "varchar", length: 191, nullable: true })
     private libelle: string;
 
+    @IsString()
     @Column({ type: "text", nullable: true})
     private description: string;
 
+    @IsString()
     @Column({ type: "varchar", length: 191, nullable: true})
     private tag: string;
 
+    @IsEnum(Status)
     @Column({ type: "enum", enum: Status, default: Status.IN_PROGRESS, nullable: true})
     private status: Status;
 
+    @IsString()
     @Column({ type: "text", nullable:true})
     private conclusion: string;
 
+    @IsEnum(Priorite)
     @Column({ type: "enum", enum: Priorite, default: Priorite.Forte, nullable: true})
     private priorite: Priorite;
 
@@ -35,9 +42,11 @@ export class BesoinEntity{
     @CreateDateColumn({name: "updated_at", nullable: true})
     private updatedAt: Date;
 
+    @IsString()
     @Column({name: "created_by", type: "varchar", length: 100, nullable: true})
     private createdBy: string;
 
+    @IsString()
     @Column({name: "updated_by",type: "varchar", length: 100, nullable: true})
     private updatedBy: string;
 
@@ -99,7 +108,6 @@ export class BesoinEntity{
     public setUpdatedBy( updatedBy: string){
         this.updatedBy = updatedBy;
     }
-
     public getUpdatedBy(): string{
         return this.updatedBy;
     }

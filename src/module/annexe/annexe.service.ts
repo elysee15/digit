@@ -1,5 +1,6 @@
 import { Injectable, HttpException, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { AnnexeRepository } from './annexe.repository';
+import { AnnexeEntity } from './annexe.entity';
 
 @Injectable()
 export class AnnexeService {
@@ -19,11 +20,11 @@ export class AnnexeService {
         throw new NotFoundException("Cet annexe n'existe pas");
     }
 
-    async creating(annexe){
+    async creating(annexe:AnnexeEntity){
         return await this.annexeRepository.created(annexe);
     }
 
-    async updating(annexeId, data){
+    async updating(annexeId: number, data: AnnexeEntity){
         const annexe = await this.annexeRepository.findById(annexeId);
         if (annexe){
             await this.annexeRepository.updated(annexeId, data);
@@ -32,7 +33,7 @@ export class AnnexeService {
         throw new NotFoundException("Impossible to update because it does not exist");
     }
 
-    async deleting(id){
+    async deleting(id: number){
         const annexe = await this.annexeRepository.findById(id);
         if (annexe){
             try {
