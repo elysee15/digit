@@ -41,8 +41,8 @@ export class BesoinController {
     }
 
     @Post()
-    public async postBesoin(@Body(new ValidationPipe({transform:true})) besoinDto: BesoinEntity){
-        const besoin = await this.besoinService.creating(besoinDto);
+    public async postBesoin(@Body(new ValidationPipe({transform:true})) data: BesoinEntity){
+        const besoin = await this.besoinService.creating(data);
         if (besoin){
             return JsonView.dataResponse(besoin, "Object was successfully save", HttpStatus.CREATED);
         }
@@ -50,8 +50,8 @@ export class BesoinController {
     }
 
     @Put(':besoinId')
-    public async updateBesoin(@Param('besoinId', ParseIntPipe) besoinId: number, @Body(new ValidationPipe({transform:true})) besoinDto: BesoinEntity){
-        const besoin = await this.besoinService.updating(besoinId, besoinDto);
+    public async updateBesoin(@Param('besoinId', ParseIntPipe) besoinId: number, @Body(new ValidationPipe({transform:true})) data: BesoinEntity){
+        const besoin = await this.besoinService.updating(besoinId, data);
         return JsonView.dataResponse(besoin, "Object was successfully modified", HttpStatus.OK);
     }
 

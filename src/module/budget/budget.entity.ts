@@ -1,4 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from "typeorm"
+import { IsString } from "class-validator";
+
 
 @Entity('budget')
 export class BudgetEntity{
@@ -6,6 +8,7 @@ export class BudgetEntity{
     @PrimaryGeneratedColumn()
     private id: number;
 
+    @IsString()
     @Column({ type: "text", nullable: true })
     private libelle: string;
 
@@ -15,9 +18,11 @@ export class BudgetEntity{
     @CreateDateColumn({name: "updated_at", nullable: true})
     private updatedAt: Date;
 
+    @IsString()
     @Column({name: "created_by", type: "varchar", length: 100, nullable: true})
     private createdBy: string;
 
+    @IsString()
     @Column({name: "updated_by",type: "varchar", length: 100, nullable: true})
     private updatedBy: string;
 

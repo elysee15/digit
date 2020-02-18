@@ -1,5 +1,6 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { BudgetRepository } from './budget.repository';
+import { BudgetEntity } from './budget.entity';
 
 @Injectable()
 export class BudgetService {
@@ -11,25 +12,25 @@ export class BudgetService {
         return await this.budgetRepository.findAll();
     }
 
-    async getById(budgetId){
+    async getById(budgetId: number){
         const budget = await this.budgetRepository.findById(budgetId);
         if (budget){
             return budget;
         }
-        return null;
+        throw new NotFoundException("Ce budget n'existe pas");
     }
 
-    async creating(budgetDto){
-        return await this.budgetRepository.created(budgetDto);
+    async creating(data: BudgetEntity){
+        return await this.budgetRepository.created(data);
     }
 
-    async updating(budgetId, budgetDto){
+    async updating(budgetId, data){
         const budget = await this.budgetRepository.findById(budgetId);
         if (budget){
-            await this.budgetRepository.updated(budgetId, budgetDto);
+            await this.budgetRepository.updated(budgetId, data);
             return budget;
         }
-        return null;
+        throw new NotFoundException("Modification impossible car budget inexistant");
     }
 
     async deleting(budgetId){
@@ -41,6 +42,6 @@ export class BudgetService {
                 throw new InternalServerErrorException("Impossible de supprimer car ce budget est en cours d'utilisation");
             }
         }
-        return null;
+        throw new NotFoundException("Suppression impossible car budget inexistant");
     }
 }

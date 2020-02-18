@@ -4,7 +4,7 @@ import { JsonView } from '../../helpers/utils/JsonView';
 import { BudgetService } from './budget.service';
 import { BudgetEntity } from './budget.entity';
 
-@Controller('budget')
+@Controller('budgets')
 export class BudgetController {
     constructor(
         private readonly budgetService : BudgetService
@@ -13,43 +13,35 @@ export class BudgetController {
     @Get()
     public async getAllBudget(){
         const budget = await this.budgetService.getAll();
-        return JsonView.dataResponse(budget, "Liste des budgets", HttpStatus.OK);
+    return JsonView.dataResponse(budget, "Objects was successfully found", HttpStatus.OK);
     }
 
     @Get(':id')
     public async getBudgetById(@Param('id', ParseIntPipe) id: number){
         const budget = await this.budgetService.getById(id);
-        if (budget){
-            return JsonView.dataResponse(budget, "", HttpStatus.OK);
-        }
-        throw new HttpException("Ce budget n'existe pas", HttpStatus.NOT_FOUND);
+        return JsonView.dataResponse(budget, "Object was successfully found", HttpStatus.OK);  
     }
 
     @Post()
-    public async postBudget(@Body() budgetDto){
-        const budget = await this.budgetService.creating(budgetDto);
+    public async postBudget(@Body(new ValidationPipe()) data: BudgetEntity){
+        const budget = await this.budgetService.creating(data);
         if (budget){
-            return JsonView.dataResponse(budget, "Le budget a été enregistrée avec succès", HttpStatus.OK);
+            return JsonView.dataResponse(budget, "Le budget a été enregistrée avec succès", HttpStatus.CREATED);
         }
         throw new HttpException("Enregistrement impossible, veuillez réessayer", HttpStatus.NOT_MODIFIED);
     }
 
     @Put(':id')
-    public async updateBudget(@Param('id', ParseIntPipe) id: number, @Body() budgetDto: BudgetEntity){
-        const budget = await this.budgetService.updating(id, budgetDto);
-        if (budget){
-            return JsonView.dataResponse(budget, "Le budget à été modifiée avec succès", HttpStatus.OK);
-        }
-        throw new HttpException("Modification impossible car budget inexistant", HttpStatus.NOT_FOUND);
+    public async updateBudget(@Param('id', ParseIntPipe) id: number, @Body(new ValidationPipe()) data: BudgetEntity){
+        const budget = await this.budgetService.updating(id, data);
+        return JsonView.dataResponse(budget, "Le budget à été modifiée avec succès", HttpStatus.OK);
+        
     }
 
     @Delete(':id')
     public async deleteBudget(@Param('id', ParseIntPipe) id: number){
         const budget = await this.budgetService.deleting(id);
-        if (budget){
-            return "Budget supprimé";
-        }
-        throw new HttpException("Suppression impossible car budget inexistant", HttpStatus.NOT_FOUND);
+        return JsonView.dataResponse(budget, "Object was succcessfully deleted", HttpStatus.OK)
     }
 
     

@@ -23,16 +23,16 @@ export class BesoinRepository extends Repository<BesoinEntity>{
         return await this.besoinRepository.findOne(besoinId);
     }
 
-    async created(besoinDto: BesoinEntity){
-        return await this.besoinRepository.save(besoinDto);
+    async created(data: BesoinEntity){
+        return await this.besoinRepository.save(data);
     }
 
-    async updated(besoinId: number, besoinDto: BesoinEntity){
-        return await this.besoinRepository.update(besoinId, besoinDto);
+    async updated(besoinId: number, data: BesoinEntity){
+        return await this.besoinRepository.update(besoinId, data);
     }
 
-    async deleted(besoinDto: BesoinEntity){
-        return await this.besoinRepository.remove(besoinDto)
+    async deleted(data: BesoinEntity){
+        return await this.besoinRepository.remove(data)
     }
 
     async countBesoin(){
