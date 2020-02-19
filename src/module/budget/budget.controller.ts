@@ -13,7 +13,11 @@ export class BudgetController {
     @Get()
     public async getAllBudget(){
         const budget = await this.budgetService.getAll();
-    return JsonView.dataResponse(budget, "Objects was successfully found", HttpStatus.OK);
+        if (Object.keys(budget).length === 0){
+            return JsonView.dataResponse(budget, "Objects empty", HttpStatus.OK);
+        } else{
+            return JsonView.dataResponse(budget, "Objects was successfully found", HttpStatus.OK);
+        }
     }
 
     @Get(':id')

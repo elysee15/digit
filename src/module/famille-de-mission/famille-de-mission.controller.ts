@@ -12,7 +12,11 @@ export class FamilleDeMissionController {
     @Get()
     public async getAllFamille(){
         const famille = await this.familleDeMissionService.getAll();
-        return JsonView.dataResponse(famille, "Mission families was successfully found", HttpStatus.OK);
+        if (Object.keys(famille).length === 0){
+            return JsonView.dataResponse(famille, "Mission families empty", HttpStatus.OK);
+        } else{
+            return JsonView.dataResponse(famille, "Mission families was successfully found", HttpStatus.OK);
+        }
     }
 
     @Get(':id')

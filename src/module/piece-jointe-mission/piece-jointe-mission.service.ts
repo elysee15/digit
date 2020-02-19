@@ -1,5 +1,6 @@
 import { Injectable, HttpException, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { PieceJointeMissionRepository } from './piece-jointe-mission.repository';
+import { PieceJointeMissionEntity } from './piece-jointe-mission.entity';
 
 
 @Injectable()
@@ -17,20 +18,21 @@ export class PieceJointeMissionService {
         if (piece){
             return piece;
         }
-        return null;
+        throw new NotFoundException("Attachements doesn't exist");
     }
 
-    async creating(pieceDto){
-        return await this.pieceJointeMissionRepository.created(pieceDto);
+    async creating(data){
+        return await this.pieceJointeMissionRepository.created(data);
     }
 
-    async updating(pieceId, pieceDto){
+    async updating(pieceId: number, data: PieceJointeMissionEntity){
         const piece = await this.pieceJointeMissionRepository.findById(pieceId);
         if (piece){
-            await this.pieceJointeMissionRepository.updated(pieceId, pieceDto);
+            await this.pieceJointeMissionRepository.updated(pieceId, data);
             return piece;
         }
-        return null;
+        throw new NotFoundException("Modification impossible car piece jointe inexistante");
+
     }
 
     async deleting(pieceId){
@@ -42,6 +44,6 @@ export class PieceJointeMissionService {
                 throw new InternalServerErrorException("Suppression impossible car piece jointe est en cours d'utilisation");
             }
         }
-        return null;
+        throw new NotFoundException("Suppression impossible car piece jointe inexistante");
     }
 }

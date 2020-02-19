@@ -12,9 +12,13 @@ export class CategorieController {
     @Get()
     public async getAllCategorie(){
         const categorie = await this.categoryService.getAll();
-        return JsonView.dataResponse(categorie, "Categories was successfully found", HttpStatus.OK);
+        if (Object.keys(categorie).length === 0){
+            return JsonView.dataResponse(categorie, "Categories empty", HttpStatus.OK);
+        } else{
+            return JsonView.dataResponse(categorie, "Categories was successfully found", HttpStatus.OK);
+        }
     }
-
+    
     @Get(':id')
     public async getCategorieById(@Param('id', ParseIntPipe) id: number){
         const categorie = await this.categoryService.getById(id);

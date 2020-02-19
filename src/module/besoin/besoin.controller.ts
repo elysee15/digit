@@ -25,7 +25,11 @@ export class BesoinController {
     @Get()
     public async getAllBesoin(){
         const besoin = await this.besoinService.getAll();
-        return JsonView.dataResponse(besoin, "Objects was successfully found", HttpStatus.OK);
+        if (Object.keys(besoin).length === 0){
+            return JsonView.dataResponse(besoin, "Objects empty", HttpStatus.OK);
+        } else{
+            return JsonView.dataResponse(besoin, "Objects was successfully found", HttpStatus.OK);
+        }
     }
 
     @Get('total')

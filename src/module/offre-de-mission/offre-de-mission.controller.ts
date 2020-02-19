@@ -12,7 +12,11 @@ export class OffreDeMissionController {
     @Get()
     public async getAllOffreDeMission(){
         const offre = await this.offreDeMissionService.getAll();
-        return JsonView.dataResponse(offre, "Objects was successfully found", HttpStatus.OK);
+        if (Object.keys(offre).length === 0){
+            return JsonView.dataResponse(offre, "Objects empty", HttpStatus.OK);
+        } else{ 
+            return JsonView.dataResponse(offre, "Objects was successfully found", HttpStatus.OK);
+        }
     }
 
     @Get('total')
