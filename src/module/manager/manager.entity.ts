@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from "typeorm";
-import { IsEmail, Max, MaxLength } from "class-validator";
+import { IsEmail, Max, MaxLength, IsString, IsEnum } from "class-validator";
 import { Civilite } from "./manager.civilite";
 
 @Entity('manager')
@@ -8,22 +8,26 @@ export class ManagerEntity{
     @PrimaryGeneratedColumn()
     private id: number;
 
+    @IsString()
     @Column({name: "nom", type: "varchar", length: 191, nullable: true})
     private lastName: string;
 
+    @IsString()
     @Column({name: "prenoms", type: "varchar", length: 191, nullable: true})
     private firstName: string;
 
+    @IsString()
     @Column({length: 100, nullable: true, type: "varchar"})
-    private fonction: string;
+    private function: string;
 
     @IsEmail()
     @MaxLength(100, {message: "Email trop long"})
     @Column({name: "email", type: "varchar", length: 100, nullable:true})
     private email: string;    
     
+    @IsEnum(Civilite)
     @Column({ type: "enum",enum: Civilite, nullable: true})
-    private civilite: Civilite;
+    private civility: Civilite;
 
     @CreateDateColumn({name: "created_at", nullable: true})
     private createdAt: Date;
@@ -59,18 +63,18 @@ export class ManagerEntity{
         return this.firstName;
     }
 
-    public setFonction(fonction: string){
-        this.fonction = fonction;
+    public setFunction(fonction: string){
+        this.function = fonction;
     }
-    public getFonction(): string{
-        return this.fonction;
+    public getFunction(): string{
+        return this.function;
     }
 
-    public setCivilite(civilite: Civilite){
-        this.civilite = civilite;
+    public setCivility(civilite: Civilite){
+        this.civility = civilite;
     }
-    public getCivilite(): Civilite{
-        return this.civilite;
+    public getCivility(): Civilite{
+        return this.civility;
     }
 
     public setEmail(email: string){

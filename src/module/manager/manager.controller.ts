@@ -3,7 +3,7 @@ import { ManagerService } from './manager.service';
 import { JsonView } from '../../helpers/utils/JsonView';
 import { ManagerEntity } from './manager.entity';
 
-@Controller('manager')
+@Controller('managers')
 export class ManagerController {
     constructor(
         private readonly managerService: ManagerService,
@@ -12,43 +12,34 @@ export class ManagerController {
     @Get()
     public async getAllManager(){
         const manager = await this.managerService.getAll();
-        return JsonView.dataResponse(manager, "Liste des managers", HttpStatus.OK);
+        return JsonView.dataResponse(manager, "Managers was successfully found", HttpStatus.OK);
     }
 
     @Get(":id")
     public async getManagerById(@Param('id', ParseIntPipe) id: number){
         const manager = await this.managerService.getById(id);
-        if (manager){
-            return JsonView.dataResponse(manager, "", HttpStatus.OK);
-        }
-        throw new HttpException("Le manager n'existe pas", HttpStatus.NOT_FOUND);
+        return JsonView.dataResponse(manager, "Manager was successfully found", HttpStatus.OK);
     }
 
     @Post()
-    public async postManager(@Body(new ValidationPipe({transform: true})) managerDto){
-        const manager = await this.managerService.creating(managerDto);
+    public async postManager(@Body(new ValidationPipe({transform: true})) data: ManagerEntity){
+        const manager = await this.managerService.creating(data);
         if (manager){
-            return JsonView.dataResponse(manager, "Le manager a été créé avec succès", HttpStatus.OK)
+            return JsonView.dataResponse(manager, "Manager was successfully created", HttpStatus.CREATED)
         }
-        throw new HttpException("Enregistrement impossible, veuillez réessayer", HttpStatus.NOT_MODIFIED);
+        throw new HttpException("Impossible to record, try again", HttpStatus.NOT_MODIFIED);
     }
 
     @Put(":id")
-    public async updateManager(@Param('id', ParseIntPipe) id: number, @Body(new ValidationPipe({transform: true})) managerDto: ManagerEntity){
-        const manager = await this.managerService.updating(id, managerDto);
-        if (manager){
-            return JsonView.dataResponse(manager, "Le manager à été modifié avec succès", HttpStatus.OK);
-        }
-        throw new HttpException("Impossible de faire de mise à jour car le manager n'existe pas", HttpStatus.NOT_FOUND);
+    public async updateManager(@Param('id', ParseIntPipe) id: number, @Body(new ValidationPipe({transform: true})) data: ManagerEntity){
+        const manager = await this.managerService.updating(id, data);
+        return JsonView.dataResponse(manager, "Manager was successfully updated", HttpStatus.OK);
     }
 
     @Delete(':id')
     public async deleteManager(@Param('id', ParseIntPipe) id : number){
         const manager = await this.managerService.deleting(id);
-        if (manager){
-            return "Le manager a été supprimé";
-        }
-        throw new HttpException("Suppression impossible car manager inexistant", HttpStatus.NOT_FOUND);
+        return JsonView.dataResponse(manager, "Manager was successfully deleted", HttpStatus.OK);
     }
 
 }
