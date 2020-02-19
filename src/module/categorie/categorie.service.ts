@@ -1,5 +1,6 @@
 import { Injectable, HttpException, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { CategorieRepository } from './categorie.repository';
+import { CategorieEntity } from './categorie.entity';
 
 @Injectable()
 export class CategorieService {
@@ -11,25 +12,25 @@ export class CategorieService {
         return await this.categoryRepository.findAll();
     }
 
-    async getById(categorieId){
+    async getById(categorieId: number){
         const categorie = await this.categoryRepository.findById(categorieId);
         if (categorie){
             return categorie;
         }
-        return null;
+        throw new NotFoundException("Categorie not found");
     }
 
-    async creating(categorieDto){
-        return await this.categoryRepository.created(categorieDto);
+    async creating(data: CategorieEntity){
+        return await this.categoryRepository.created(data);
     }
 
-    async updating(categorieId, categorieDto){
-        const categorie = await this.categoryRepository.findById(categorieId);
+    async updating(categorieId: number, data: CategorieEntity){
+        const categorie = await this.categoryRepository.findById(categorieId); 
         if (categorie){
-            await this.categoryRepository.updated(categorieId, categorieDto);
+             this.categoryRepository.updated(categorieId, data);
             return categorie;
         }
-        return null;
+        throw new NotFoundException("Modification impossible car catégorie inexistante");
     }
 
     async deleting(categorieId){
@@ -41,6 +42,6 @@ export class CategorieService {
                 throw new InternalServerErrorException("Impossible de supprimer car cette categorie est en cours d'utilisation");
             }
         }
-        return null;
+        throw new NotFoundException("Suppression impossible car catégorie inexistante");
     }
 }

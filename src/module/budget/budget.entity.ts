@@ -10,7 +10,7 @@ export class BudgetEntity{
 
     @IsString()
     @Column({ type: "text", nullable: true })
-    private libelle: string;
+    private label: string;
 
     @CreateDateColumn({name: "created_at", nullable: true})
     private createdAt: Date;
@@ -36,11 +36,11 @@ export class BudgetEntity{
         return this.id;
     }
 
-    public setLibelle(libelle: string){
-        this.libelle = libelle;
+    public setLabel(label: string){
+        this.label = label;
     }
-    public getLibelle(): string{
-        return this.libelle;
+    public getLabel(): string{
+        return this.label;
     }
 
     public setCreatedAt(createdAt: Date){

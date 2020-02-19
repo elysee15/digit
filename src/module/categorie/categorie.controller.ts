@@ -1,9 +1,9 @@
-import {Controller, Get, HttpStatus, Param, Put, Body, Post, NotFoundException, HttpException, Delete, ParseIntPipe} from '@nestjs/common';
+import {Controller, Get, HttpStatus, Param, Put, Body, Post, NotFoundException, HttpException, Delete, ParseIntPipe, ValidationPipe} from '@nestjs/common';
 import { CategorieService } from './categorie.service';
 import { JsonView } from '../../helpers/utils/JsonView';
 import { CategorieEntity } from './categorie.entity';
 
-@Controller('categorie')
+@Controller('categories')
 export class CategorieController {
     constructor(
         private readonly categoryService : CategorieService
@@ -12,43 +12,34 @@ export class CategorieController {
     @Get()
     public async getAllCategorie(){
         const categorie = await this.categoryService.getAll();
-        return JsonView.dataResponse(categorie, "Liste des categories", HttpStatus.OK);
+        return JsonView.dataResponse(categorie, "Categories was successfully found", HttpStatus.OK);
     }
 
     @Get(':id')
     public async getCategorieById(@Param('id', ParseIntPipe) id: number){
         const categorie = await this.categoryService.getById(id);
-        if (categorie){
-            return JsonView.dataResponse(categorie, "", HttpStatus.OK);
-        }
-        throw new HttpException("La categorie n'existe pas", HttpStatus.NOT_FOUND);
+        return JsonView.dataResponse(categorie, "Categorie was successfully found", HttpStatus.OK);
     }
 
     @Post()
-    public async postCategorie(@Body() categorieDto){
-        const categorie = await this.categoryService.creating(categorieDto);
+    public async postCategorie(@Body(new ValidationPipe()) data: CategorieEntity){
+        const categorie = await this.categoryService.creating(data);
         if (categorie){
-            return JsonView.dataResponse(categorie, "La catégorie a été enregistrée avec succès", HttpStatus.OK);
+            return JsonView.dataResponse(categorie, "Categorie was successfully record", HttpStatus.CREATED);
         }
-        throw new HttpException("Enregistrement impossible, veuillez réessayer", HttpStatus.NOT_MODIFIED);
+        throw new HttpException("Cannot record, try again", HttpStatus.NOT_MODIFIED);
     }
 
     @Put(':categorieId')
-    public async updateCategorie(@Param('categorieId', ParseIntPipe) categorieId: number, @Body() categorieDto: CategorieEntity){
-        const categorie = await this.categoryService.updating(categorieId, categorieDto);
-        if (categorie){
-            return JsonView.dataResponse(categorie, "La categorie à été modifiée avec succès", HttpStatus.OK);
-        }
-        throw new HttpException("Modification impossible car catégorie inexistante", HttpStatus.NOT_FOUND);
+    public async updateCategorie(@Param('categorieId', ParseIntPipe) categorieId: number, @Body(new ValidationPipe()) data: CategorieEntity){
+        const categorie = await this.categoryService.updating(categorieId, data);
+        return JsonView.dataResponse(categorie, "Category was successfully updated", HttpStatus.OK);
     }
 
     @Delete(':categorieId')
     public async deleteCategorie(@Param('categorieId', ParseIntPipe) categorieId: number){
         const categorie = await this.categoryService.deleting(categorieId);
-        if (categorie){
-            return "Catégorie supprimée";
-        }
-        throw new HttpException("Suppression impossible car catégorie inexistante", HttpStatus.NOT_FOUND);
+        return JsonView.dataResponse(categorie, "Categorie was successfully deleted", HttpStatus.OK)
     }
 
     

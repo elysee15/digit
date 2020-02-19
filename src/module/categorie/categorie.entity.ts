@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from "typeorm"
+import { IsString } from "class-validator";
 
 @Entity('categorie')
 export class CategorieEntity{
@@ -6,8 +7,9 @@ export class CategorieEntity{
     @PrimaryGeneratedColumn()
     private id: number;
 
-    @Column({ type: "varchar", length: 191, nullable: true })
-    private libelle: string;
+    @IsString()
+    @Column({ type: "varchar", length: 50, nullable: true })
+    private label: string;
 
     @CreateDateColumn({name: "created_at", nullable: true})
     private createdAt: Date;
@@ -15,9 +17,11 @@ export class CategorieEntity{
     @CreateDateColumn({name: "updated_at", nullable: true})
     private updatedAt: Date;
 
+    @IsString()
     @Column({name: "created_by", type: "varchar", length: 100, nullable: true})
     private createdBy: string;
 
+    @IsString()
     @Column({name: "updated_by",type: "varchar", length: 100, nullable: true})
     private updatedBy: string;
 
@@ -31,11 +35,11 @@ export class CategorieEntity{
         return this.id;
     }
 
-    public setLibelle(libelle: string){
-        this.libelle = libelle;
+    public setLabel(label: string){
+        this.label = label;
     }
-    public getLibelle(): string{
-        return this.libelle;
+    public getLabel(): string{
+        return this.label;
     }
 
     public setCreatedAt(createdAt: Date){
