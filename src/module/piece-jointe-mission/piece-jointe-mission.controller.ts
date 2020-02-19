@@ -3,7 +3,7 @@ import { JsonView } from '../../helpers/utils/JsonView';
 import { PieceJointeMissionService } from './piece-jointe-mission.service';
 import { PieceJointeMissionEntity } from './piece-jointe-mission.entity';
 
-@Controller('pieces-jointe-mission')
+@Controller('pieces-jointes-mission')
 export class PieceJointeMissionController {
     constructor(
         private readonly pieceJointeMissionService : PieceJointeMissionService

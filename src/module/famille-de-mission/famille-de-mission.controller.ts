@@ -14,9 +14,8 @@ export class FamilleDeMissionController {
         const famille = await this.familleDeMissionService.getAll();
         if (Object.keys(famille).length === 0){
             return JsonView.dataResponse(famille, "Mission families empty", HttpStatus.OK);
-        } else{
-            return JsonView.dataResponse(famille, "Mission families was successfully found", HttpStatus.OK);
         }
+        return JsonView.dataResponse(famille, "Mission families was successfully found", HttpStatus.OK);
     }
 
     @Get(':id')

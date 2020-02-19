@@ -14,9 +14,8 @@ export class CategorieController {
         const categorie = await this.categoryService.getAll();
         if (Object.keys(categorie).length === 0){
             return JsonView.dataResponse(categorie, "Categories empty", HttpStatus.OK);
-        } else{
-            return JsonView.dataResponse(categorie, "Categories was successfully found", HttpStatus.OK);
         }
+            return JsonView.dataResponse(categorie, "Categories was successfully found", HttpStatus.OK);
     }
     
     @Get(':id')

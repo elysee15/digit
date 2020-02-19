@@ -28,9 +28,8 @@ export class AnnexeController {
         const annexe = await this.annexeService.getAll();
         if (Object.keys(annexe).length === 0){
             return JsonView.dataResponse(annexe, "Objects empty", HttpStatus.OK);
-        } else{
-            return JsonView.dataResponse(annexe, "Object was found with success", HttpStatus.OK);
         }
+        return JsonView.dataResponse(annexe, "Object was found with success", HttpStatus.OK);
     }
 
     @Get(':id')

@@ -1,5 +1,6 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { PieceJointeQuestionRepository } from './piece-jointe-question.repository';
+import { PieceJointeQuestionEntity } from './piece-jointe-question.entity';
 
 
 @Injectable()
@@ -12,28 +13,28 @@ export class PieceJointeQuestionService {
         return await this.pieceJointeQuestionRepository.findAll();
     }
 
-    async getById(pieceId){
+    async getById(pieceId: number){
         const piece = await this.pieceJointeQuestionRepository.findById(pieceId);
         if (piece){
             return piece;
         }
-        return null;
+        throw new NotFoundException("Object doesn't exist");
     }
 
-    async creating(pieceDto){
-        return await this.pieceJointeQuestionRepository.created(pieceDto);
+    async creating(data: PieceJointeQuestionEntity){
+        return await this.pieceJointeQuestionRepository.created(data);
     }
 
-    async updating(pieceId, pieceDto){
+    async updating(pieceId: number, data: PieceJointeQuestionEntity){
         const piece = await this.pieceJointeQuestionRepository.findById(pieceId);
         if (piece){
-            await this.pieceJointeQuestionRepository.updated(pieceId, pieceDto);
+            await this.pieceJointeQuestionRepository.updated(pieceId, data);
             return piece;
         }
-        return null;
+        throw new NotFoundException("La piece jointe n'existe pas");
     }
 
-    async deleting(pieceId){
+    async deleting(pieceId: number){
         const piece = await this.pieceJointeQuestionRepository.findById(pieceId);
         if (piece){
             try {
@@ -42,6 +43,6 @@ export class PieceJointeQuestionService {
                 throw new InternalServerErrorException('Suppression impossible car piece jointe est en cours d\'utilisation');
             }
         }
-        return null;
+        throw new NotFoundException("Suppression impossible car piece jointe inexistante");
     }
 }

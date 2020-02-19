@@ -27,9 +27,8 @@ export class BesoinController {
         const besoin = await this.besoinService.getAll();
         if (Object.keys(besoin).length === 0){
             return JsonView.dataResponse(besoin, "Objects empty", HttpStatus.OK);
-        } else{
-            return JsonView.dataResponse(besoin, "Objects was successfully found", HttpStatus.OK);
         }
+        return JsonView.dataResponse(besoin, "Objects was successfully found", HttpStatus.OK);
     }
 
     @Get('total')

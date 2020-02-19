@@ -14,9 +14,8 @@ export class OffreDeMissionController {
         const offre = await this.offreDeMissionService.getAll();
         if (Object.keys(offre).length === 0){
             return JsonView.dataResponse(offre, "Objects empty", HttpStatus.OK);
-        } else{ 
-            return JsonView.dataResponse(offre, "Objects was successfully found", HttpStatus.OK);
         }
+        return JsonView.dataResponse(offre, "Objects was successfully found", HttpStatus.OK);
     }
 
     @Get('total')

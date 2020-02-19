@@ -15,9 +15,8 @@ export class BudgetController {
         const budget = await this.budgetService.getAll();
         if (Object.keys(budget).length === 0){
             return JsonView.dataResponse(budget, "Objects empty", HttpStatus.OK);
-        } else{
-            return JsonView.dataResponse(budget, "Objects was successfully found", HttpStatus.OK);
         }
+        return JsonView.dataResponse(budget, "Objects was successfully found", HttpStatus.OK);
     }
 
     @Get(':id')

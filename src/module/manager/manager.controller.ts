@@ -14,9 +14,8 @@ export class ManagerController {
         const manager = await this.managerService.getAll();
         if (Object.keys(manager).length === 0){
             return JsonView.dataResponse(manager, "Manager empty", HttpStatus.OK);
-        } else{
-            return JsonView.dataResponse(manager, "Objects was successfully found", HttpStatus.OK);
         }
+        return JsonView.dataResponse(manager, "Objects was successfully found", HttpStatus.OK);
     }
 
     @Get(":id")
