@@ -1,11 +1,13 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from "typeorm"
+import { IsString } from "class-validator";
 
-@Entity('famille_de_mission')
+@Entity('mission_family')
 export class FamilleDeMissionEntity{
 
     @PrimaryGeneratedColumn()
     private id: number;
 
+    @IsString()
     @Column({ type: "varchar", length: 100, nullable: true })
     private libelle: string;
 

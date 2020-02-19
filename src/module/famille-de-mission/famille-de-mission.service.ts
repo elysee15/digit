@@ -1,5 +1,6 @@
 import { Injectable, HttpException, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { FamilleDeMissionRepository } from './famille-de-mission.repository';
+import { FamilleDeMissionEntity } from './famille-de-mission.entity';
 
 @Injectable()
 export class FamilleDeMissionService {
@@ -11,25 +12,25 @@ export class FamilleDeMissionService {
         return await this.familleDeMissionRepository.findAll();
     }
 
-    async getById(id:number){
+    async getById(id: number){
         const famille = await this.familleDeMissionRepository.findById(id);
         if (famille){
             return famille;
         }
-        return null;
+        throw new NotFoundException("Cette famille de mission n'existe pas");
     }
 
-    async creating(familleDto){
-        return await this.familleDeMissionRepository.created(familleDto);
+    async creating(data: FamilleDeMissionEntity){
+        return await this.familleDeMissionRepository.created(data);
     }
 
-    async updating(id, familleDto){
+    async updating(id: number, data: FamilleDeMissionEntity){
         const famille = await this.familleDeMissionRepository.findById(id);
         if (famille){
-            await this.familleDeMissionRepository.updated(id, familleDto);
+            await this.familleDeMissionRepository.updated(id, data);
             return famille;
         }
-        return null;
+        throw new NotFoundException("Modification impossible car famille de mission inexistante");
     }
 
     async deleting(id){
@@ -41,6 +42,6 @@ export class FamilleDeMissionService {
                 throw new InternalServerErrorException("Impossible de supprimer car cette famille de mission est en cours d'utilisation");
             }
         }
-        return null;
+        throw new NotFoundException("Suppression impossible car famille de mission inexistante");
     }
 }
