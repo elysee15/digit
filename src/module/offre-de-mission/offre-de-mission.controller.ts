@@ -3,7 +3,7 @@ import { OffreDeMissionService } from './offre-de-mission.service';
 import { JsonView } from '../../helpers/utils/JsonView';
 import { OffreDeMissionEntity } from './offre-de-mission.entity';
 
-@Controller('offre')
+@Controller('offres-de-mission')
 export class OffreDeMissionController {
     constructor(
         private readonly offreDeMissionService : OffreDeMissionService
@@ -12,7 +12,7 @@ export class OffreDeMissionController {
     @Get()
     public async getAllOffreDeMission(){
         const offre = await this.offreDeMissionService.getAll();
-        return JsonView.dataResponse(offre, "Liste des offres de mission", HttpStatus.OK);
+        return JsonView.dataResponse(offre, "Objects was successfully found", HttpStatus.OK);
     }
 
     @Get('total')
@@ -24,37 +24,28 @@ export class OffreDeMissionController {
     @Get(':id')
     public async getOffreDeMissionById(@Param('id', ParseIntPipe) id: number){
         const offre = await this.offreDeMissionService.getById(id);
-        if (offre){
-            return JsonView.dataResponse(offre, "", HttpStatus.OK);
-        }
-        throw new HttpException("Cette offre de mission n'existe pas", HttpStatus.NOT_FOUND);
+        return JsonView.dataResponse(offre, "Object was successfully found", HttpStatus.OK);
     }
 
     @Post()
-    public async postOffreDeMission(@Body(new ValidationPipe({transform: true}))  offreDto: OffreDeMissionEntity){
-        const offre = await this.offreDeMissionService.creating(offreDto);
+    public async postOffreDeMission(@Body(new ValidationPipe({transform: true}))  data: OffreDeMissionEntity){
+        const offre = await this.offreDeMissionService.creating(data);
         if (offre){
-            return JsonView.dataResponse(offre, "L'offre de mission a été enregistrée avec succès", HttpStatus.OK);
+            return JsonView.dataResponse(offre, "L'offre de mission a été enregistrée avec succès", HttpStatus.CREATED);
         }
         throw new HttpException("Enregistrement impossible, veuillez réessayer", HttpStatus.NOT_MODIFIED);
     }
 
     @Put(':id')
-    public async updateOffreDeMission(@Param('id', ParseIntPipe) id: number, @Body(new ValidationPipe({transform: true})) offreDto: OffreDeMissionEntity){
-        const offre = await this.offreDeMissionService.updating(id, offreDto);
-        if (offre){
-            return JsonView.dataResponse(offre, "L'offre de mission à été modifiée avec succès", HttpStatus.OK);
-        }
-        throw new HttpException(`Modification impossible car offre de mission ${id} inexistante`, HttpStatus.NOT_FOUND);
+    public async updateOffreDeMission(@Param('id', ParseIntPipe) id: number, @Body(new ValidationPipe({transform: true})) data: OffreDeMissionEntity){
+        const offre = await this.offreDeMissionService.updating(id, data);
+        return JsonView.dataResponse(offre, "L'offre de mission à été modifiée avec succès", HttpStatus.OK);
     }
 
     @Delete(':id')
     public async deleteOffreDeMission(@Param('id', ParseIntPipe) id: number){
         const projet = await this.offreDeMissionService.deleting(id);
-        if (projet){
-            return "Offre de mission supprimé";
-        }
-        throw new HttpException("Suppression impossible car offre de mission inexistante", HttpStatus.NOT_FOUND);
+        return JsonView.dataResponse(projet, "Offre de mission supprimée avec succès", HttpStatus.OK)
     }
 
 }

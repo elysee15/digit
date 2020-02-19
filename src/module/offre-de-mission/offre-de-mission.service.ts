@@ -1,5 +1,6 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { OffreDeMissionRepository } from './offre-de-mission.repository';
+import { OffreDeMissionEntity } from './offre-de-mission.entity';
 
 @Injectable()
 export class OffreDeMissionService {
@@ -16,20 +17,20 @@ export class OffreDeMissionService {
         if (offre){
             return offre;
         }
-        return null;
+        throw new NotFoundException("Cette offre de mission n'existe pas");
     }
 
-    async creating(offreDto){
-        return await this.offreDeMissionRepository.created(offreDto);
+    async creating(data: OffreDeMissionEntity){
+        return await this.offreDeMissionRepository.created(data);
     }
 
-    async updating(id, offreDto){
+    async updating(id: number, data: OffreDeMissionEntity){
         const offre = await this.offreDeMissionRepository.findById(id);
         if (offre){
-            await this.offreDeMissionRepository.updated(id,offreDto);
-            return offreDto;
+            await this.offreDeMissionRepository.updated(id,data);
+            return offre;
         }
-        return null;
+        throw new NotFoundException(`Modification impossible car offre de mission ${id} inexistante`);
     }
 
     async deleting(id){
@@ -41,7 +42,7 @@ export class OffreDeMissionService {
                 throw new InternalServerErrorException("Impossible de supprimer car cette offre est en cours d'utilisation");
             }
         }
-        return null;
+        throw new NotFoundException("Suppression impossible car offre de mission inexistante");
     }
 
     async findCount(){

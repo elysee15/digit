@@ -4,6 +4,7 @@ import { ProjetDeMissionEntity } from "../projet-de-mission/projet-de-mission.en
 import { PlaningEntity } from "../planing/planing.entity";
 import { BudgetEntity } from "../budget/budget.entity";
 import { Etat } from "./offre-de-mission.state";
+import { IsString, IsEnum } from "class-validator";
 
 @Entity('offre_de_mission')
 export class OffreDeMissionEntity{
@@ -11,14 +12,17 @@ export class OffreDeMissionEntity{
     @PrimaryGeneratedColumn()
     private id: number;
 
+    @IsString()
     @Column({ type: "text", nullable: true})
-    private contexte: string;
+    private context: string;
 
+    @IsString()
     @Column({ type: "text", nullable: true})
-    private methodologie: string;
+    private methodology: string;
 
+    @IsEnum(Etat)
     @Column({ type: "enum",enum: Etat, default: Etat.TO_SEND, nullable: true})
-    private etat: Etat;
+    private state: Etat;
 
     @CreateDateColumn({name: "created_at", nullable: true})
     private createdAt: Date;
@@ -51,18 +55,18 @@ export class OffreDeMissionEntity{
     @ManyToOne(type => BudgetEntity , {eager: true, nullable:true})
     private budget: BudgetEntity;
 
-    public setContexte(contexte: string){
-        this.contexte = contexte;
+    public setContexte(context: string){
+        this.context = context;
     }
     public getContexte(): string{
-        return this.contexte;
+        return this.context;
     }
 
-    public setMethodologie(methodologie: string){
-        this.methodologie = methodologie;
+    public setMethodologie(methodology: string){
+        this.methodology = methodology;
     }
     public getMethodologie(): string{
-        return this.methodologie;
+        return this.methodology;
     }
 
     public setCreatedAt(createdAt: Date){
