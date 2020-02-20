@@ -56,7 +56,7 @@ export class ProjetDeMissionController {
       return JsonView.dataResponse(
         projet,
         "Le projet de mission a été enregistré avec succès",
-        HttpStatus.OK
+        HttpStatus.CREATED
       );
     }
     throw new HttpException(

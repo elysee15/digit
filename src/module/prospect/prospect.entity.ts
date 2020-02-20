@@ -7,13 +7,14 @@ import {
 } from "typeorm";
 import { Status } from "./prospect.status";
 import { ManagerEntity } from "../manager/manager.entity";
-import { IsEmail, IsInt } from "class-validator";
+import { IsEmail, IsInt, IsAlphanumeric, IsString, IsEnum } from "class-validator";
 
 @Entity("prospect")
 export class ProspectEntity {
   @PrimaryGeneratedColumn()
   private id: number;
 
+  @IsAlphanumeric()
   @Column({ type: "varchar", length: "30", nullable: true })
   private codeProspect: string;
 
@@ -21,6 +22,7 @@ export class ProspectEntity {
   @Column({ type: "int", nullable: true })
   private typeSociete: number;
 
+  @IsString()
   @Column({
     name: "raison_sociale",
     type: "varchar",
@@ -33,18 +35,23 @@ export class ProspectEntity {
   @Column({ type: "varchar", length: 191, nullable: true })
   private email: string;
 
+  @IsString()
   @Column({ type: "varchar", length: 191, nullable: true })
-  private pays: string;
+  private country: string;
 
+  @IsString()
   @Column({ type: "varchar", length: 191, nullable: true })
-  private ville: string;
+  private city: string;
 
+  @IsString()
   @Column({ type: "varchar", length: 100, nullable: true })
-  private telephone: string;
+  private phone: string;
 
+  @IsString()
   @Column({ type: "varchar", length: 100, nullable: true })
-  private sigle: string;
+  private acronym: string;
 
+  @IsEnum(Status)
   @Column({
     type: "enum",
     enum: Status,
@@ -91,32 +98,32 @@ export class ProspectEntity {
     return this.email;
   }
 
-  public setPays(pays: string) {
-    this.pays = pays;
+  public setPays(country: string) {
+    this.country = country;
   }
   public getPays(): string {
-    return this.pays;
+    return this.country;
   }
 
-  public setVille(ville: string) {
-    this.ville = ville;
+  public setVille(city: string) {
+    this.city = city;
   }
   public getVille(): string {
-    return this.ville;
+    return this.city;
   }
 
-  public setSigle(sigle: string) {
-    this.sigle = sigle;
+  public setSigle(acronym: string) {
+    this.acronym = acronym;
   }
   public getSigle(): string {
-    return this.sigle;
+    return this.acronym;
   }
 
-  public setTelephone(telephone: string) {
-    this.telephone = telephone;
+  public setTelephone(phone: string) {
+    this.phone = phone;
   }
   public getTelephone(): string {
-    return this.telephone;
+    return this.phone;
   }
 
   public setRaisonSociale(raisonSociale: string) {

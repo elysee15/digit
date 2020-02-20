@@ -23,9 +23,12 @@ export class ProspectController {
   @Get()
   public async getAllProspect() {
     const prospect = await this.prospectService.getAll();
+    if (Object.keys(prospect).length === 0) {
+      return JsonView.dataResponse(prospect, "Object empty", HttpStatus.OK);
+    }
     return JsonView.dataResponse(
       prospect,
-      "Liste des prospects",
+      "Objects was successfully found",
       HttpStatus.OK
     );
   }
@@ -33,28 +36,27 @@ export class ProspectController {
   @Get("total")
   public async getCountProspect() {
     const prospect = await this.prospectService.countProspect();
-    return JsonView.dataResponse(prospect, "Nombre total des prospects", 201);
+    return JsonView.dataResponse(prospect, "Nombre total des prospects", HttpStatus.OK);
   }
 
   @Get(":id")
   public async getProspectById(@Param("id", ParseIntPipe) id: number) {
     const prospect = await this.prospectService.getById(id);
     if (prospect) {
-      return JsonView.dataResponse(prospect, "", HttpStatus.OK);
+      return JsonView.dataResponse(prospect, "Object was successfully found", HttpStatus.OK);
     }
-    throw new HttpException("Le prospect n'existe pas", HttpStatus.NOT_FOUND);
   }
 
   @Post()
   public async postProspect(
-    @Body(new ValidationPipe({ transform: true })) prospectDto: ProspectEntity
+    @Body(new ValidationPipe({ transform: true })) data: ProspectEntity
   ) {
-    const prospect = await this.prospectService.creating(prospectDto);
+    const prospect = await this.prospectService.creating(data);
     if (prospect) {
       return JsonView.dataResponse(
         prospect,
         "Le prospect a été enregistré avec succès",
-        HttpStatus.OK
+        HttpStatus.CREATED
       );
     }
     throw new HttpException(
@@ -63,15 +65,13 @@ export class ProspectController {
     );
   }
 
+  
   @Put(":prospectId")
   public async updateProspect(
     @Param("prospectId", ParseIntPipe) prospectId: number,
-    @Body(new ValidationPipe({ transform: true })) prospectDto: ProspectEntity
+    @Body(new ValidationPipe({ transform: true })) data: ProspectEntity
   ) {
-    const prospect = await this.prospectService.updating(
-      prospectId,
-      prospectDto
-    );
+    const prospect = await this.prospectService.updating(prospectId,data);
     if (prospect) {
       return JsonView.dataResponse(
         prospect,
@@ -79,10 +79,6 @@ export class ProspectController {
         HttpStatus.OK
       );
     }
-    throw new HttpException(
-      "Modification impossible car prospect inexistant",
-      HttpStatus.NOT_FOUND
-    );
   }
 
   @Delete(":prospectId")
@@ -90,12 +86,6 @@ export class ProspectController {
     @Param("prospectId", ParseIntPipe) prospectId: number
   ) {
     const prospect = await this.prospectService.deleting(prospectId);
-    if (prospect) {
-      return "Prospect supprimé";
-    }
-    throw new HttpException(
-      "Suppression impossible car prospect inexistant",
-      HttpStatus.NOT_FOUND
-    );
+    return JsonView.dataResponse(prospect, "Prospect was successfully deleted", HttpStatus.OK)
   }
 }
