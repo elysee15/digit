@@ -42,7 +42,11 @@ export class ProspectionController {
   @Get(":id")
   public async getProspectionById(@Param("id", ParseIntPipe) id: number) {
     const prospection = await this.prospectionService.getById(id);
-    return JsonView.dataResponse(prospection, "Object was successfully found", HttpStatus.OK);
+    return JsonView.dataResponse(
+      prospection,
+      "Object was successfully found",
+      HttpStatus.OK
+    );
   }
 
   @Post()
@@ -70,8 +74,15 @@ export class ProspectionController {
     @Body(new ValidationPipe({ transform: true }))
     data: ProspectionEntity
   ) {
-    const prospection = await this.prospectionService.updating(prospectionId,data);
-    return JsonView.dataResponse(prospection,"La prospection à été modifiée avec succès",HttpStatus.OK);
+    const prospection = await this.prospectionService.updating(
+      prospectionId,
+      data
+    );
+    return JsonView.dataResponse(
+      prospection,
+      "La prospection à été modifiée avec succès",
+      HttpStatus.OK
+    );
   }
 
   @Delete(":prospectionId")
@@ -79,6 +90,9 @@ export class ProspectionController {
     @Param("prospectionId", ParseIntPipe) prospectionId: number
   ) {
     const prospection = await this.prospectionService.deleting(prospectionId);
-    return JsonView.dataResponse(prospection, "Prospection was successfully deleted")
+    return JsonView.dataResponse(
+      prospection,
+      "Prospection was successfully deleted"
+    );
   }
 }

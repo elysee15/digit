@@ -36,7 +36,11 @@ export class QuestionController {
   @Get(":id")
   public async getQuestionById(@Param("id", ParseIntPipe) id: number) {
     const question = await this.questionService.getById(id);
-    return JsonView.dataResponse(question, "Object was successfully found", HttpStatus.OK);
+    return JsonView.dataResponse(
+      question,
+      "Object was successfully found",
+      HttpStatus.OK
+    );
   }
 
   @Post()
@@ -60,10 +64,7 @@ export class QuestionController {
     @Param("questionId", ParseIntPipe) questionId: number,
     @Body(new ValidationPipe()) data: QuestionEntity
   ) {
-    const question = await this.questionService.updating(
-      questionId,
-      data
-    );
+    const question = await this.questionService.updating(questionId, data);
     if (question) {
       return JsonView.dataResponse(
         question,
@@ -78,6 +79,10 @@ export class QuestionController {
     @Param("questionId", ParseIntPipe) questionId: number
   ) {
     const question = await this.questionService.deleting(questionId);
-    return JsonView.dataResponse(question, "Question was successfully deleted", HttpStatus.OK)
+    return JsonView.dataResponse(
+      question,
+      "Question was successfully deleted",
+      HttpStatus.OK
+    );
   }
 }

@@ -26,7 +26,11 @@ export class PlaningController {
     if (Object.keys(planing).length === 0) {
       return JsonView.dataResponse(planing, "Objects empty", HttpStatus.OK);
     }
-    return JsonView.dataResponse(planing, "Planing was successfully found", HttpStatus.OK);
+    return JsonView.dataResponse(
+      planing,
+      "Planing was successfully found",
+      HttpStatus.OK
+    );
   }
 
   @Get(":id")
@@ -35,7 +39,6 @@ export class PlaningController {
     if (planing) {
       return JsonView.dataResponse(planing, "", HttpStatus.OK);
     }
-
   }
 
   @Post()
@@ -74,7 +77,10 @@ export class PlaningController {
     @Param("planingId", ParseIntPipe) planingId: number
   ) {
     const planing = await this.planingService.deleting(planingId);
-    return JsonView.dataResponse(planing, "Planning supprimé avec succès", HttpStatus.OK)
-    
+    return JsonView.dataResponse(
+      planing,
+      "Planning supprimé avec succès",
+      HttpStatus.OK
+    );
   }
 }

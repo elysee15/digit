@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException
+} from "@nestjs/common";
 import { QuestionnaireRepository } from "./questionnaire.repository";
 import { QuestionnaireEntity } from "./questionnaire.entity";
 
@@ -19,9 +23,8 @@ export class QuestionnaireService {
     if (questionnaire) {
       return questionnaire;
     }
-    throw new NotFoundException(
-      "Le questionnaire n'existe pas"
-    );  }
+    throw new NotFoundException("Le questionnaire n'existe pas");
+  }
 
   async creating(data: QuestionnaireEntity) {
     return await this.questionnaireRepository.created(data);
@@ -32,17 +35,13 @@ export class QuestionnaireService {
       questionnaireId
     );
     if (questionnaire) {
-      await this.questionnaireRepository.updated(
-        questionnaireId,
-        data
-      );
+      await this.questionnaireRepository.updated(questionnaireId, data);
       return questionnaire;
     }
     throw new NotFoundException(
       "Modification impossible car questionnaire inexistant"
-    );  
+    );
   }
-
 
   async deleting(questionnaireId) {
     const questionnaire = await this.questionnaireRepository.findById(
@@ -59,5 +58,6 @@ export class QuestionnaireService {
     }
     throw new NotFoundException(
       "Suppression impossible car questionnaire inexistant"
-    );  }
+    );
+  }
 }

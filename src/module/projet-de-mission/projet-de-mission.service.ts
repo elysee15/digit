@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException
+} from "@nestjs/common";
 import { ProjetDeMissionRepository } from "./projet-de-mission.repository";
 import { ProjetDeMissionEntity } from "./projet-de-mission.entity";
 
@@ -17,9 +21,7 @@ export class ProjetDeMissionService {
     if (projet) {
       return projet;
     }
-    throw new NotFoundException(
-      "Ce projet de mission n'existe pas"
-    );
+    throw new NotFoundException("Ce projet de mission n'existe pas");
   }
 
   async creating(data: ProjetDeMissionEntity) {
@@ -34,7 +36,8 @@ export class ProjetDeMissionService {
     }
     throw new NotFoundException(
       "Modification impossible car projet de mission inexistant"
-    );  }
+    );
+  }
 
   async deleting(id: number) {
     const projet = await this.projetDeMissionRepository.findById(id);
@@ -49,7 +52,7 @@ export class ProjetDeMissionService {
     }
     throw new NotFoundException(
       "Suppression impossible car projet de mission inexistant"
-    );  
+    );
   }
 
   async findCount() {

@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException
+} from "@nestjs/common";
 import { PlaningRepository } from "./planing.repository";
 import { PlaningEntity } from "./planing.entity";
 
@@ -15,7 +19,7 @@ export class PlaningService {
     if (planing) {
       return planing;
     }
-    throw new NotFoundException("Ce planing n'existe pas");  
+    throw new NotFoundException("Ce planing n'existe pas");
   }
 
   async creating(data: PlaningEntity) {
@@ -46,5 +50,6 @@ export class PlaningService {
     }
     throw new NotFoundException(
       "Suppression impossible car planing inexistant"
-    );  }
+    );
+  }
 }

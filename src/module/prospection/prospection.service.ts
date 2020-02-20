@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException
+} from "@nestjs/common";
 import { ProspectionRepository } from "./prospection.repository";
 import { ProspectionEntity } from "./prospection.entity";
 
@@ -17,7 +21,9 @@ export class ProspectionService {
     if (prospection) {
       return prospection;
     }
-    throw new NotFoundException(`La prospection avec l'id ${prospectionId} n'existe pas`);
+    throw new NotFoundException(
+      `La prospection avec l'id ${prospectionId} n'existe pas`
+    );
   }
 
   async creating(prospectionDto: ProspectionEntity) {
@@ -34,7 +40,8 @@ export class ProspectionService {
     }
     throw new NotFoundException(
       `Modification impossible, la prospection avec l'id ${prospectionId} n'existe pas`
-    );  }
+    );
+  }
 
   async deleting(prospectionId: number) {
     const prospection = await this.prospectionRepository.findById(
@@ -51,7 +58,8 @@ export class ProspectionService {
     }
     throw new NotFoundException(
       `Suppression impossible, la prospection avec l'id ${prospectionId} n'existe pas`
-    );  }
+    );
+  }
 
   async findCount() {
     return await this.prospectionRepository.countProspection();

@@ -24,7 +24,11 @@ export class QuestionnaireController {
   public async getAllQuestionnaire() {
     const questionnaire = await this.questionnaireService.getAll();
     if (Object.keys(questionnaire).length === 0) {
-      return JsonView.dataResponse(questionnaire, "Object empty", HttpStatus.OK);
+      return JsonView.dataResponse(
+        questionnaire,
+        "Object empty",
+        HttpStatus.OK
+      );
     }
     return JsonView.dataResponse(
       questionnaire,
@@ -37,7 +41,11 @@ export class QuestionnaireController {
   public async getQuestionnaireById(@Param("id", ParseIntPipe) id: number) {
     const questionnaire = await this.questionnaireService.getById(id);
     if (questionnaire) {
-      return JsonView.dataResponse(questionnaire, "Object was successfully found", HttpStatus.OK);
+      return JsonView.dataResponse(
+        questionnaire,
+        "Object was successfully found",
+        HttpStatus.OK
+      );
     }
   }
 
@@ -45,9 +53,7 @@ export class QuestionnaireController {
   public async postQuestionnaire(
     @Body(new ValidationPipe()) data: QuestionnaireEntity
   ) {
-    const questionnaire = await this.questionnaireService.creating(
-      data
-    );
+    const questionnaire = await this.questionnaireService.creating(data);
     if (questionnaire) {
       return JsonView.dataResponse(
         questionnaire,
@@ -71,10 +77,10 @@ export class QuestionnaireController {
       data
     );
     return JsonView.dataResponse(
-        questionnaire,
-        "Le questionnaire à été modifié avec succès",
-        HttpStatus.OK
-      );
+      questionnaire,
+      "Le questionnaire à été modifié avec succès",
+      HttpStatus.OK
+    );
   }
 
   @Delete(":questionnaireId")
@@ -82,6 +88,9 @@ export class QuestionnaireController {
     @Param("questionnaireId", ParseIntPipe) questionnaireId: number
   ) {
     const question = await this.questionnaireService.deleting(questionnaireId);
-    return JsonView.dataResponse(question, "Questionnary was successfully deleted")
+    return JsonView.dataResponse(
+      question,
+      "Questionnary was successfully deleted"
+    );
   }
 }

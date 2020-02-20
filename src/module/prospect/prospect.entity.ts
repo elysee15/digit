@@ -7,7 +7,13 @@ import {
 } from "typeorm";
 import { Status } from "./prospect.status";
 import { ManagerEntity } from "../manager/manager.entity";
-import { IsEmail, IsInt, IsAlphanumeric, IsString, IsEnum } from "class-validator";
+import {
+  IsEmail,
+  IsInt,
+  IsAlphanumeric,
+  IsString,
+  IsEnum
+} from "class-validator";
 
 @Entity("prospect")
 export class ProspectEntity {

@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException
+} from "@nestjs/common";
 import { ProspectRepository } from "./prospect.repository";
 import { ProspectEntity } from "./prospect.entity";
 
@@ -15,7 +19,7 @@ export class ProspectService {
     if (prospect) {
       return prospect;
     }
-    throw new NotFoundException("Le prospect n'existe pas");  
+    throw new NotFoundException("Le prospect n'existe pas");
   }
 
   async creating(prospectDto: ProspectEntity) {
@@ -30,7 +34,8 @@ export class ProspectService {
     }
     throw new NotFoundException(
       "Modification impossible car prospect inexistant"
-    );  }
+    );
+  }
 
   async deleting(prospectId: number) {
     const prospect = await this.prospectRepository.findById(prospectId);
@@ -45,7 +50,8 @@ export class ProspectService {
     }
     throw new NotFoundException(
       "Suppression impossible car prospect inexistant"
-    );  }
+    );
+  }
 
   public async countProspect() {
     return await this.prospectRepository.countProspect();

@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException
+} from "@nestjs/common";
 import { QuestionRepository } from "./question.repository";
 import { QuestionEntity } from "./question.entity";
 
@@ -29,7 +33,8 @@ export class QuestionService {
       return question;
     }
     throw new NotFoundException(
-      "Modification impossible car question inexistante");  
+      "Modification impossible car question inexistante"
+    );
   }
 
   async deleting(questionId: number) {
@@ -45,5 +50,6 @@ export class QuestionService {
     }
     throw new NotFoundException(
       "Suppression impossible car question inexistante"
-    );  }
+    );
+  }
 }

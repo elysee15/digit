@@ -27,7 +27,11 @@ export class ProjetDeMissionController {
     if (Object.keys(projet).length === 0) {
       return JsonView.dataResponse(projet, "Objects empty", HttpStatus.OK);
     }
-    return JsonView.dataResponse(projet, "Objects was successfully found",HttpStatus.OK);
+    return JsonView.dataResponse(
+      projet,
+      "Objects was successfully found",
+      HttpStatus.OK
+    );
   }
 
   @Get("total")
@@ -43,7 +47,11 @@ export class ProjetDeMissionController {
   @Get(":id")
   public async getProjetDeMissionById(@Param("id", ParseIntPipe) id: number) {
     const projet = await this.projetDeMissionService.getById(id);
-    return JsonView.dataResponse(projet, "Object was successfully found", HttpStatus.OK);
+    return JsonView.dataResponse(
+      projet,
+      "Object was successfully found",
+      HttpStatus.OK
+    );
   }
 
   @Post()
@@ -84,7 +92,9 @@ export class ProjetDeMissionController {
   @Delete(":id")
   public async deleteProjetDeMission(@Param("id", ParseIntPipe) id: number) {
     const projet = await this.projetDeMissionService.deleting(id);
-    return JsonView.dataResponse(projet, "Mission project was successfully deleted")
-    
+    return JsonView.dataResponse(
+      projet,
+      "Mission project was successfully deleted"
+    );
   }
 }

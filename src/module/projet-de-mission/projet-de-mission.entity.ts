@@ -20,7 +20,6 @@ export class ProjetDeMissionEntity {
   @Column({ type: "text", nullable: true })
   private methodology: string;
 
-
   @Column({ type: "text", nullable: true })
   private summary: string;
 
