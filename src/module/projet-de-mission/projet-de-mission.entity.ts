@@ -5,21 +5,26 @@ import {
   CreateDateColumn
 } from "typeorm";
 import { Status, Etat } from "./projet-de-mission.model";
+import { IsString, IsEnum } from "class-validator";
 
 @Entity("projet_de_mission")
 export class ProjetDeMissionEntity {
   @PrimaryGeneratedColumn()
   private id: number;
 
+  @IsString()
   @Column({ type: "text", nullable: true })
-  private contexte: string;
+  private context: string;
+
+  @IsString()
+  @Column({ type: "text", nullable: true })
+  private methodology: string;
+
 
   @Column({ type: "text", nullable: true })
-  private methodologie: string;
+  private summary: string;
 
-  @Column({ type: "text", nullable: true })
-  private recapitualtif: string;
-
+  @IsEnum(Status)
   @Column({
     type: "enum",
     enum: Status,
@@ -28,6 +33,7 @@ export class ProjetDeMissionEntity {
   })
   private status: Status;
 
+  @IsEnum(Etat)
   @Column({ type: "enum", enum: Etat, default: Etat.TO_SEND, nullable: true })
   private etat: Etat;
 
@@ -50,25 +56,25 @@ export class ProjetDeMissionEntity {
     return this.id;
   }
 
-  public setContexte(contexte: string) {
-    this.contexte = contexte;
+  public setContext(context: string) {
+    this.context = context;
   }
-  public getContexte(): string {
-    return this.contexte;
-  }
-
-  public setMethodologie(methodologie: string) {
-    this.methodologie = methodologie;
-  }
-  public getMethodologie(): string {
-    return this.methodologie;
+  public getContext(): string {
+    return this.context;
   }
 
-  public setRecapitulatif(recapitulatif: string) {
-    this.recapitualtif = recapitulatif;
+  public setMethodology(methodology: string) {
+    this.methodology = methodology;
   }
-  public getRecapitulatif(): string {
-    return this.recapitualtif;
+  public getMethodology(): string {
+    return this.methodology;
+  }
+
+  public setSummary(summary: string) {
+    this.summary = summary;
+  }
+  public getSummary(): string {
+    return this.summary;
   }
 
   public async setStatus(status: Status) {

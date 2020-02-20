@@ -24,11 +24,10 @@ export class ProjetDeMissionController {
   @Get()
   public async getAllProjetDeMission() {
     const projet = await this.projetDeMissionService.getAll();
-    return JsonView.dataResponse(
-      projet,
-      "Liste des projets de mission",
-      HttpStatus.OK
-    );
+    if (Object.keys(projet).length === 0) {
+      return JsonView.dataResponse(projet, "Objects empty", HttpStatus.OK);
+    }
+    return JsonView.dataResponse(projet, "Objects was successfully found",HttpStatus.OK);
   }
 
   @Get("total")
@@ -44,21 +43,15 @@ export class ProjetDeMissionController {
   @Get(":id")
   public async getProjetDeMissionById(@Param("id", ParseIntPipe) id: number) {
     const projet = await this.projetDeMissionService.getById(id);
-    if (projet) {
-      return JsonView.dataResponse(projet, "", HttpStatus.OK);
-    }
-    throw new HttpException(
-      "Ce projet de mission n'existe pas",
-      HttpStatus.NOT_FOUND
-    );
+    return JsonView.dataResponse(projet, "Object was successfully found", HttpStatus.OK);
   }
 
   @Post()
   public async postProjetDeMission(
     @Body(new ValidationPipe({ transform: true }))
-    projetDto: ProjetDeMissionEntity
+    data: ProjetDeMissionEntity
   ) {
-    const projet = await this.projetDeMissionService.creating(projetDto);
+    const projet = await this.projetDeMissionService.creating(data);
     if (projet) {
       return JsonView.dataResponse(
         projet,
@@ -76,9 +69,9 @@ export class ProjetDeMissionController {
   public async updateProjetDeMission(
     @Param("id", ParseIntPipe) id: number,
     @Body(new ValidationPipe({ transform: true }))
-    projetDto: ProjetDeMissionEntity
+    data: ProjetDeMissionEntity
   ) {
-    const projet = await this.projetDeMissionService.updating(id, projetDto);
+    const projet = await this.projetDeMissionService.updating(id, data);
     if (projet) {
       return JsonView.dataResponse(
         projet,
@@ -86,21 +79,12 @@ export class ProjetDeMissionController {
         HttpStatus.OK
       );
     }
-    throw new HttpException(
-      "Modification impossible car projet de mission inexistant",
-      HttpStatus.NOT_FOUND
-    );
   }
 
   @Delete(":id")
   public async deleteProjetDeMission(@Param("id", ParseIntPipe) id: number) {
     const projet = await this.projetDeMissionService.deleting(id);
-    if (projet) {
-      return "Projet de mission supprimé";
-    }
-    throw new HttpException(
-      "Suppression impossible car projet de mission inexistant",
-      HttpStatus.NOT_FOUND
-    );
+    return JsonView.dataResponse(projet, "Mission project was successfully deleted")
+    
   }
 }

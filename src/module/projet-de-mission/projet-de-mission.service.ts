@@ -1,5 +1,6 @@
-import { Injectable, InternalServerErrorException } from "@nestjs/common";
+import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { ProjetDeMissionRepository } from "./projet-de-mission.repository";
+import { ProjetDeMissionEntity } from "./projet-de-mission.entity";
 
 @Injectable()
 export class ProjetDeMissionService {
@@ -11,28 +12,31 @@ export class ProjetDeMissionService {
     return await this.projetDeMissionRepository.findAll();
   }
 
-  async getById(id) {
+  async getById(id: number) {
     const projet = await this.projetDeMissionRepository.findById(id);
     if (projet) {
       return projet;
     }
-    return null;
+    throw new NotFoundException(
+      "Ce projet de mission n'existe pas"
+    );
   }
 
-  async creating(projetDto) {
-    return await this.projetDeMissionRepository.created(projetDto);
+  async creating(data: ProjetDeMissionEntity) {
+    return await this.projetDeMissionRepository.created(data);
   }
 
-  async updating(id, projetDto) {
+  async updating(id: number, data: ProjetDeMissionEntity) {
     const projet = await this.projetDeMissionRepository.findById(id);
     if (projet) {
-      await this.projetDeMissionRepository.updated(id, projetDto);
-      return projetDto;
+      await this.projetDeMissionRepository.updated(id, data);
+      return projet;
     }
-    return null;
-  }
+    throw new NotFoundException(
+      "Modification impossible car projet de mission inexistant"
+    );  }
 
-  async deleting(id) {
+  async deleting(id: number) {
     const projet = await this.projetDeMissionRepository.findById(id);
     if (projet) {
       try {
@@ -43,7 +47,9 @@ export class ProjetDeMissionService {
         );
       }
     }
-    return null;
+    throw new NotFoundException(
+      "Suppression impossible car projet de mission inexistant"
+    );  
   }
 
   async findCount() {
