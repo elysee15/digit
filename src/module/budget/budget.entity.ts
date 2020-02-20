@@ -1,74 +1,76 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from "typeorm"
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn
+} from "typeorm";
 import { IsString } from "class-validator";
 
+@Entity("budget")
+export class BudgetEntity {
+  @PrimaryGeneratedColumn()
+  private id: number;
 
-@Entity('budget')
-export class BudgetEntity{
+  @IsString()
+  @Column({ type: "text", nullable: true })
+  private label: string;
 
-    @PrimaryGeneratedColumn()
-    private id: number;
+  @CreateDateColumn({ name: "created_at", nullable: true })
+  private createdAt: Date;
 
-    @IsString()
-    @Column({ type: "text", nullable: true })
-    private label: string;
+  @CreateDateColumn({ name: "updated_at", nullable: true })
+  private updatedAt: Date;
 
-    @CreateDateColumn({name: "created_at", nullable: true})
-    private createdAt: Date;
+  @IsString()
+  @Column({ name: "created_by", type: "varchar", length: 100, nullable: true })
+  private createdBy: string;
 
-    @CreateDateColumn({name: "updated_at", nullable: true})
-    private updatedAt: Date;
+  @IsString()
+  @Column({ name: "updated_by", type: "varchar", length: 100, nullable: true })
+  private updatedBy: string;
 
-    @IsString()
-    @Column({name: "created_by", type: "varchar", length: 100, nullable: true})
-    private createdBy: string;
+  //-------------------------------------------------------------
 
-    @IsString()
-    @Column({name: "updated_by",type: "varchar", length: 100, nullable: true})
-    private updatedBy: string;
+  public setId(id: number) {
+    this.id = id;
+  }
+  public getId(): number {
+    return this.id;
+  }
 
+  public setLabel(label: string) {
+    this.label = label;
+  }
+  public getLabel(): string {
+    return this.label;
+  }
 
-    //-------------------------------------------------------------
+  public setCreatedAt(createdAt: Date) {
+    this.createdAt = createdAt;
+  }
+  public getCreatedAt(): Date {
+    return this.createdAt;
+  }
 
-    public setId(id:number){
-        this.id = id;
-    }
-    public getId(): number{
-        return this.id;
-    }
+  public setUpdatedAt(updatedAt: Date) {
+    this.updatedAt = updatedAt;
+  }
+  public getUpdatedAt(): Date {
+    return this.updatedAt;
+  }
 
-    public setLabel(label: string){
-        this.label = label;
-    }
-    public getLabel(): string{
-        return this.label;
-    }
+  public setCreatedBy(createdBy: string) {
+    this.createdBy = createdBy;
+  }
+  public getCreatedBy(): string {
+    return this.createdBy;
+  }
 
-    public setCreatedAt(createdAt: Date){
-        this.createdAt = createdAt;
-    }
-    public getCreatedAt(): Date{
-        return this.createdAt;
-    }
+  public setUpdatedBy(updatedBy: string) {
+    this.updatedBy = updatedBy;
+  }
 
-    public setUpdatedAt(updatedAt: Date){
-        this.updatedAt = updatedAt;
-    }
-    public getUpdatedAt(): Date{
-        return this.updatedAt;
-    }
-
-    public setCreatedBy( createdBy: string){
-        this.createdBy = createdBy;
-    }
-    public getCreatedBy(): string{
-        return this.createdBy;
-    }
-
-    public setUpdatedBy( updatedBy: string){
-        this.updatedBy = updatedBy;
-    }
-
-    public getUpdatedBy(): string{
-        return this.updatedBy;
-    }
+  public getUpdatedBy(): string {
+    return this.updatedBy;
+  }
 }

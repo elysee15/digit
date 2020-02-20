@@ -1,51 +1,61 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import { OffreDeMissionRepository } from './offre-de-mission.repository';
-import { OffreDeMissionEntity } from './offre-de-mission.entity';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException
+} from "@nestjs/common";
+import { OffreDeMissionRepository } from "./offre-de-mission.repository";
+import { OffreDeMissionEntity } from "./offre-de-mission.entity";
 
 @Injectable()
 export class OffreDeMissionService {
-    constructor(
-        private readonly offreDeMissionRepository: OffreDeMissionRepository
-    ){}
+  constructor(
+    private readonly offreDeMissionRepository: OffreDeMissionRepository
+  ) {}
 
-    async getAll(){
-        return await this.offreDeMissionRepository.findAll();
-    }
+  async getAll() {
+    return await this.offreDeMissionRepository.findAll();
+  }
 
-    async getById(id){
-        const offre = await this.offreDeMissionRepository.findById(id);
-        if (offre){
-            return offre;
-        }
-        throw new NotFoundException("Cette offre de mission n'existe pas");
+  async getById(id) {
+    const offre = await this.offreDeMissionRepository.findById(id);
+    if (offre) {
+      return offre;
     }
+    throw new NotFoundException("Cette offre de mission n'existe pas");
+  }
 
-    async creating(data: OffreDeMissionEntity){
-        return await this.offreDeMissionRepository.created(data);
-    }
+  async creating(data: OffreDeMissionEntity) {
+    return await this.offreDeMissionRepository.created(data);
+  }
 
-    async updating(id: number, data: OffreDeMissionEntity){
-        const offre = await this.offreDeMissionRepository.findById(id);
-        if (offre){
-            await this.offreDeMissionRepository.updated(id,data);
-            return offre;
-        }
-        throw new NotFoundException(`Modification impossible car offre de mission ${id} inexistante`);
+  async updating(id: number, data: OffreDeMissionEntity) {
+    const offre = await this.offreDeMissionRepository.findById(id);
+    if (offre) {
+      await this.offreDeMissionRepository.updated(id, data);
+      return offre;
     }
+    throw new NotFoundException(
+      `Modification impossible car offre de mission ${id} inexistante`
+    );
+  }
 
-    async deleting(id){
-        const offre = await this.offreDeMissionRepository.findById(id);
-        if (offre){
-            try {
-                return this.offreDeMissionRepository.deleted(offre);
-            } catch(e){
-                throw new InternalServerErrorException("Impossible de supprimer car cette offre est en cours d'utilisation");
-            }
-        }
-        throw new NotFoundException("Suppression impossible car offre de mission inexistante");
+  async deleting(id) {
+    const offre = await this.offreDeMissionRepository.findById(id);
+    if (offre) {
+      try {
+        return this.offreDeMissionRepository.deleted(offre);
+      } catch (e) {
+        throw new InternalServerErrorException(
+          "Impossible de supprimer car cette offre est en cours d'utilisation"
+        );
+      }
     }
+    throw new NotFoundException(
+      "Suppression impossible car offre de mission inexistante"
+    );
+  }
 
-    async findCount(){
-        return await this.offreDeMissionRepository.countOffre();
-    }
+  async findCount() {
+    return await this.offreDeMissionRepository.countOffre();
+  }
 }

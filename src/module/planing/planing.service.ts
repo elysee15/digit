@@ -1,46 +1,50 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { PlaningRepository } from './planing.repository';
+import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { PlaningRepository } from "./planing.repository";
+import { PlaningEntity } from "./planing.entity";
 
 @Injectable()
 export class PlaningService {
-    constructor(
-        private readonly planingRepository: PlaningRepository
-    ){}
+  constructor(private readonly planingRepository: PlaningRepository) {}
 
-    async getAll(){
-        return await this.planingRepository.findAll();
-    }
+  async getAll() {
+    return await this.planingRepository.findAll();
+  }
 
-    async getById(planingId){
-        const planing = await this.planingRepository.findById(planingId);
-        if (planing){
-            return planing;
-        }
-        return null;
+  async getById(planingId) {
+    const planing = await this.planingRepository.findById(planingId);
+    if (planing) {
+      return planing;
     }
+    throw new NotFoundException("Ce planing n'existe pas");  
+  }
 
-    async creating(planingDto){
-        return await this.planingRepository.created(planingDto);
-    }
+  async creating(data: PlaningEntity) {
+    return await this.planingRepository.created(data);
+  }
 
-    async updating(planingId, planingDto){
-        const planing = await this.planingRepository.findById(planingId);
-        if (planing){
-            await this.planingRepository.updated(planingId, planingDto);
-            return planing;
-        }
-        return null;
+  async updating(planingId: number, data: PlaningEntity) {
+    const planing = await this.planingRepository.findById(planingId);
+    if (planing) {
+      await this.planingRepository.updated(planingId, data);
+      return planing;
     }
+    throw new NotFoundException(
+      "Modification impossible car planing inexistant"
+    );
+  }
 
-    async deleting(planingId){
-        const planing = await this.planingRepository.findById(planingId);
-        if (planing){
-            try {
-                return this.planingRepository.deleted(planing);
-            } catch(e){
-                throw new InternalServerErrorException("Impossible de supprimer car ce planing est en cours d'utilisation");
-            }
-        }
-        return null;
+  async deleting(planingId: number) {
+    const planing = await this.planingRepository.findById(planingId);
+    if (planing) {
+      try {
+        return this.planingRepository.deleted(planing);
+      } catch (e) {
+        throw new InternalServerErrorException(
+          "Impossible de supprimer car ce planing est en cours d'utilisation"
+        );
+      }
     }
+    throw new NotFoundException(
+      "Suppression impossible car planing inexistant"
+    );  }
 }

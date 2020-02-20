@@ -1,5 +1,5 @@
 export enum Civilite {
-    Monsieur = 'Monsieur',
-    Madame = 'Madame',
-    Mademoiselle = 'Mademoiselle'
+  Monsieur = "Monsieur",
+  Madame = "Madame",
+  Mademoiselle = "Mademoiselle"
 }

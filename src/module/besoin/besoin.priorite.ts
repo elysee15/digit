@@ -1,5 +1,5 @@
-export enum Priorite{
-    Forte = "Forte",
-    Moyenne = "Moyenne",
-    Faible = "Faible"
+export enum Priorite {
+  Forte = "Forte",
+  Moyenne = "Moyenne",
+  Faible = "Faible"
 }
