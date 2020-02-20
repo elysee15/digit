@@ -6,15 +6,18 @@ import {
   ManyToOne
 } from "typeorm";
 import { ProspectionEntity } from "../prospection/prospection.entity";
+import { IsString, IsNotEmpty, IsDefined } from "class-validator";
 
 @Entity("questionnaire")
 export class QuestionnaireEntity {
   @PrimaryGeneratedColumn()
   private id: number;
 
+  @IsString()
   @Column({ type: "varchar", length: 191, nullable: true })
-  private libelle: string;
+  private label: string;
 
+  @IsString()
   @Column({ type: "text", nullable: true })
   private conclusion: string;
 
@@ -43,10 +46,10 @@ export class QuestionnaireEntity {
   }
 
   public setLibelle(libelle: string) {
-    this.libelle = libelle;
+    this.label = libelle;
   }
   public getLibelle(): string {
-    return this.libelle;
+    return this.label;
   }
 
   public setCreatedAt(createdAt: Date) {

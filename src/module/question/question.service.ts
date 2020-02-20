@@ -1,5 +1,6 @@
-import { Injectable, InternalServerErrorException } from "@nestjs/common";
+import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { QuestionRepository } from "./question.repository";
+import { QuestionEntity } from "./question.entity";
 
 @Injectable()
 export class QuestionService {
@@ -9,28 +10,29 @@ export class QuestionService {
     return await this.questionRepository.findAll();
   }
 
-  async getById(questionId) {
+  async getById(questionId: number) {
     const question = await this.questionRepository.findById(questionId);
     if (question) {
       return question;
     }
-    return null;
+    throw new NotFoundException("La question n'existe pas");
   }
 
-  async creating(questionDto) {
-    return await this.questionRepository.created(questionDto);
+  async creating(data: QuestionEntity) {
+    return await this.questionRepository.created(data);
   }
 
-  async updating(questionId, questionDto) {
+  async updating(questionId: number, data: QuestionEntity) {
     const question = await this.questionRepository.findById(questionId);
     if (question) {
-      await this.questionRepository.updated(questionId, questionDto);
+      await this.questionRepository.updated(questionId, data);
       return question;
     }
-    return null;
+    throw new NotFoundException(
+      "Modification impossible car question inexistante");  
   }
 
-  async deleting(questionId) {
+  async deleting(questionId: number) {
     const question = await this.questionRepository.findById(questionId);
     if (question) {
       try {
@@ -41,6 +43,7 @@ export class QuestionService {
         );
       }
     }
-    return null;
-  }
+    throw new NotFoundException(
+      "Suppression impossible car question inexistante"
+    );  }
 }

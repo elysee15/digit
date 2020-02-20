@@ -4,18 +4,22 @@ import {
   Column,
   CreateDateColumn
 } from "typeorm";
+import { IsString, IsDefined } from "class-validator";
 
 @Entity("question")
 export class QuestionEntity {
   @PrimaryGeneratedColumn()
   private id: number;
 
+  @IsString()
   @Column({ type: "varchar", length: 191, nullable: true })
-  private libelle: string;
+  private label: string;
 
+  @IsString()
   @Column({ type: "text", nullable: true })
-  private reponse: string;
+  private response: string;
 
+  @IsString()
   @Column({ type: "text", nullable: true })
   private descriptif: string;
 
@@ -41,17 +45,17 @@ export class QuestionEntity {
   }
 
   public setLibelle(libelle: string) {
-    this.libelle = libelle;
+    this.label = libelle;
   }
   public getLibelle(): string {
-    return this.libelle;
+    return this.label;
   }
 
   public setReponse(reponse: string) {
-    this.reponse = reponse;
+    this.response = reponse;
   }
   public getReponse(): string {
-    return this.reponse;
+    return this.response;
   }
 
   public setCreatedAt(createdAt: Date) {

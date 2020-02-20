@@ -9,7 +9,8 @@ import {
   NotFoundException,
   HttpException,
   Delete,
-  ParseIntPipe
+  ParseIntPipe,
+  ValidationPipe
 } from "@nestjs/common";
 import { JsonView } from "src/helpers/utils/JsonView";
 import { QuestionnaireService } from "./questionnaire.service";
@@ -22,9 +23,12 @@ export class QuestionnaireController {
   @Get()
   public async getAllQuestionnaire() {
     const questionnaire = await this.questionnaireService.getAll();
+    if (Object.keys(questionnaire).length === 0) {
+      return JsonView.dataResponse(questionnaire, "Object empty", HttpStatus.OK);
+    }
     return JsonView.dataResponse(
       questionnaire,
-      "Liste des questionnaires",
+      "Objects was successfully found",
       HttpStatus.OK
     );
   }
@@ -33,26 +37,22 @@ export class QuestionnaireController {
   public async getQuestionnaireById(@Param("id", ParseIntPipe) id: number) {
     const questionnaire = await this.questionnaireService.getById(id);
     if (questionnaire) {
-      return JsonView.dataResponse(questionnaire, "", HttpStatus.OK);
+      return JsonView.dataResponse(questionnaire, "Object was successfully found", HttpStatus.OK);
     }
-    throw new HttpException(
-      "La questionnaire n'existe pas",
-      HttpStatus.NOT_FOUND
-    );
   }
 
   @Post()
   public async postQuestionnaire(
-    @Body() questionnaireDto: QuestionnaireEntity
+    @Body(new ValidationPipe()) data: QuestionnaireEntity
   ) {
     const questionnaire = await this.questionnaireService.creating(
-      questionnaireDto
+      data
     );
     if (questionnaire) {
       return JsonView.dataResponse(
         questionnaire,
         "Le questionnaire a été enregistré avec succès",
-        HttpStatus.OK
+        HttpStatus.CREATED
       );
     }
     throw new HttpException(
@@ -64,23 +64,17 @@ export class QuestionnaireController {
   @Put(":questionnaireId")
   public async updateQuestionnaire(
     @Param("questionnaireId", ParseIntPipe) questionnaireId: number,
-    @Body() questionnaireDto: QuestionnaireEntity
+    @Body(new ValidationPipe()) data: QuestionnaireEntity
   ) {
     const questionnaire = await this.questionnaireService.updating(
       questionnaireId,
-      questionnaireDto
+      data
     );
-    if (questionnaire) {
-      return JsonView.dataResponse(
+    return JsonView.dataResponse(
         questionnaire,
         "Le questionnaire à été modifié avec succès",
         HttpStatus.OK
       );
-    }
-    throw new HttpException(
-      "Modification impossible car questionnaire inexistant",
-      HttpStatus.NOT_FOUND
-    );
   }
 
   @Delete(":questionnaireId")
@@ -88,12 +82,6 @@ export class QuestionnaireController {
     @Param("questionnaireId", ParseIntPipe) questionnaireId: number
   ) {
     const question = await this.questionnaireService.deleting(questionnaireId);
-    if (question) {
-      return "Questionnaire supprimé";
-    }
-    throw new HttpException(
-      "Suppression impossible car questionnaire inexistant",
-      HttpStatus.NOT_FOUND
-    );
+    return JsonView.dataResponse(question, "Questionnary was successfully deleted")
   }
 }

@@ -9,7 +9,8 @@ import {
   NotFoundException,
   HttpException,
   Delete,
-  ParseIntPipe
+  ParseIntPipe,
+  ValidationPipe
 } from "@nestjs/common";
 import { JsonView } from "../../helpers/utils/JsonView";
 import { QuestionService } from "./question.service";
@@ -22,9 +23,12 @@ export class QuestionController {
   @Get()
   public async getAllQuestion() {
     const question = await this.questionService.getAll();
+    if (Object.keys(question).length === 0) {
+      return JsonView.dataResponse(question, "Object empty", HttpStatus.OK);
+    }
     return JsonView.dataResponse(
       question,
-      "Liste des questions",
+      "Objects was successfully found",
       HttpStatus.OK
     );
   }
@@ -32,20 +36,17 @@ export class QuestionController {
   @Get(":id")
   public async getQuestionById(@Param("id", ParseIntPipe) id: number) {
     const question = await this.questionService.getById(id);
-    if (question) {
-      return JsonView.dataResponse(question, "", HttpStatus.OK);
-    }
-    throw new HttpException("La question n'existe pas", HttpStatus.NOT_FOUND);
+    return JsonView.dataResponse(question, "Object was successfully found", HttpStatus.OK);
   }
 
   @Post()
-  public async postQuestion(@Body() questionDto) {
-    const question = await this.questionService.creating(questionDto);
+  public async postQuestion(@Body(new ValidationPipe()) data: QuestionEntity) {
+    const question = await this.questionService.creating(data);
     if (question) {
       return JsonView.dataResponse(
         question,
         "La question a été enregistrée avec succès",
-        HttpStatus.OK
+        HttpStatus.CREATED
       );
     }
     throw new HttpException(
@@ -57,11 +58,11 @@ export class QuestionController {
   @Put(":questionId")
   public async updateQuestion(
     @Param("questionId", ParseIntPipe) questionId: number,
-    @Body() questionDto: QuestionEntity
+    @Body(new ValidationPipe()) data: QuestionEntity
   ) {
     const question = await this.questionService.updating(
       questionId,
-      questionDto
+      data
     );
     if (question) {
       return JsonView.dataResponse(
@@ -70,10 +71,6 @@ export class QuestionController {
         HttpStatus.OK
       );
     }
-    throw new HttpException(
-      "Modification impossible car question inexistante",
-      HttpStatus.NOT_FOUND
-    );
   }
 
   @Delete(":questionId")
@@ -81,12 +78,6 @@ export class QuestionController {
     @Param("questionId", ParseIntPipe) questionId: number
   ) {
     const question = await this.questionService.deleting(questionId);
-    if (question) {
-      return "Question supprimée";
-    }
-    throw new HttpException(
-      "Suppression impossible car question inexistante",
-      HttpStatus.NOT_FOUND
-    );
+    return JsonView.dataResponse(question, "Question was successfully deleted", HttpStatus.OK)
   }
 }
