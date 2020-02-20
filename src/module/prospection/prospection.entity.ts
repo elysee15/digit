@@ -7,15 +7,18 @@ import {
 } from "typeorm";
 import { Status, Type } from "./prospection.status";
 import { ProspectEntity } from "../prospect/prospect.entity";
+import { IsAlphanumeric, IsString, IsEnum } from "class-validator";
 
 @Entity("prospection")
 export class ProspectionEntity {
   @PrimaryGeneratedColumn()
   private id: number;
 
+  @IsString()
   @Column({ type: "varchar", length: 191, nullable: true })
-  private libelle: string;
+  private label: string;
 
+  @IsAlphanumeric()
   @Column({
     name: "code_prospection",
     type: "varchar",
@@ -24,6 +27,7 @@ export class ProspectionEntity {
   })
   private codeProspection: string;
 
+  @IsEnum(Status)
   @Column({
     type: "enum",
     enum: Status,
@@ -32,6 +36,7 @@ export class ProspectionEntity {
   })
   private status: Status;
 
+  @IsEnum(Type)
   @Column({ type: "enum", enum: Type, default: Type.PROSPECT, nullable: true })
   private type: Type;
 
@@ -60,10 +65,10 @@ export class ProspectionEntity {
   }
 
   public setLibelle(libelle: string) {
-    this.libelle = libelle;
+    this.label = libelle;
   }
   public getLibelle(): string {
-    return this.libelle;
+    return this.label;
   }
 
   public async setStatus(status: Status) {

@@ -23,9 +23,12 @@ export class ProspectionController {
   @Get()
   public async getAllProspection() {
     const prospection = await this.prospectionService.getAll();
+    if (Object.keys(prospection).length === 0) {
+      return JsonView.dataResponse(prospection, "Object empty", HttpStatus.OK);
+    }
     return JsonView.dataResponse(
       prospection,
-      "Liste des prospections",
+      "Objects was successfully found",
       HttpStatus.OK
     );
   }
@@ -39,23 +42,20 @@ export class ProspectionController {
   @Get(":id")
   public async getProspectionById(@Param("id", ParseIntPipe) id: number) {
     const prospection = await this.prospectionService.getById(id);
-    if (prospection) {
-      return JsonView.dataResponse(prospection, "", HttpStatus.OK);
-    }
-    throw new NotFoundException(`La prospection avec l'id ${id} n'existe pas`);
+    return JsonView.dataResponse(prospection, "Object was successfully found", HttpStatus.OK);
   }
 
   @Post()
   public async postProspection(
     @Body(new ValidationPipe({ transform: true }))
-    prospectionDto: ProspectionEntity
+    data: ProspectionEntity
   ) {
-    const prospection = await this.prospectionService.creating(prospectionDto);
+    const prospection = await this.prospectionService.creating(data);
     if (prospection) {
       return JsonView.dataResponse(
         prospection,
         "Le prospection a été enregistré avec succès",
-        HttpStatus.OK
+        HttpStatus.CREATED
       );
     }
     throw new HttpException(
@@ -68,22 +68,10 @@ export class ProspectionController {
   public async updateProspection(
     @Param("prospectionId", ParseIntPipe) prospectionId: number,
     @Body(new ValidationPipe({ transform: true }))
-    prospectionDto: ProspectionEntity
+    data: ProspectionEntity
   ) {
-    const prospection = await this.prospectionService.updating(
-      prospectionId,
-      prospectionDto
-    );
-    if (prospection) {
-      return JsonView.dataResponse(
-        prospection,
-        "La prospection à été modifiée avec succès",
-        HttpStatus.OK
-      );
-    }
-    throw new NotFoundException(
-      `Modification impossible, la prospection avec l'id ${prospectionId} n'existe pas`
-    );
+    const prospection = await this.prospectionService.updating(prospectionId,data);
+    return JsonView.dataResponse(prospection,"La prospection à été modifiée avec succès",HttpStatus.OK);
   }
 
   @Delete(":prospectionId")
@@ -91,11 +79,6 @@ export class ProspectionController {
     @Param("prospectionId", ParseIntPipe) prospectionId: number
   ) {
     const prospection = await this.prospectionService.deleting(prospectionId);
-    if (prospection) {
-      return "prospection supprimée";
-    }
-    throw new NotFoundException(
-      `Suppression impossible, la prospection avec l'id ${prospectionId} n'existe pas`
-    );
+    return JsonView.dataResponse(prospection, "Prospection was successfully deleted")
   }
 }
