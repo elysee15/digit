@@ -1,7 +1,9 @@
 import {
   Injectable,
   InternalServerErrorException,
-  NotFoundException
+  NotFoundException,
+  ConflictException,
+  HttpStatus
 } from "@nestjs/common";
 import { BesoinRepository } from "./besoin.repository";
 
@@ -42,10 +44,11 @@ export class BesoinService {
     const besoin = await this.besoinRepository.findById(besoinId);
     if (besoin) {
       try {
-        return this.besoinRepository.deleted(besoin);
+        return await this.besoinRepository.deleted(besoin);
       } catch (e) {
-        throw new InternalServerErrorException(
-          "Impossible de supprimer car ce besoin est en cours d'utilisation"
+        throw new ConflictException(
+          "Impossible de supprimer car ce besoin est en cours d'utilisation",
+          "Foreign key constraint error"
         );
       }
     }

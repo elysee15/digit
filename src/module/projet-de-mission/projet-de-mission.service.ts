@@ -1,7 +1,8 @@
 import {
   Injectable,
   InternalServerErrorException,
-  NotFoundException
+  NotFoundException,
+  ConflictException
 } from "@nestjs/common";
 import { ProjetDeMissionRepository } from "./projet-de-mission.repository";
 import { ProjetDeMissionEntity } from "./projet-de-mission.entity";
@@ -43,10 +44,11 @@ export class ProjetDeMissionService {
     const projet = await this.projetDeMissionRepository.findById(id);
     if (projet) {
       try {
-        return this.projetDeMissionRepository.deleted(projet);
+        return await this.projetDeMissionRepository.deleted(projet);
       } catch (e) {
-        throw new InternalServerErrorException(
-          "Impossible de supprimer car ce projet est en cours d'utilisation"
+        throw new ConflictException(
+          "Impossible de supprimer car ce projet est en cours d'utilisation",
+          "Foreign key constraint error"
         );
       }
     }

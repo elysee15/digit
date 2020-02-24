@@ -21,15 +21,15 @@ export class AnnexeRepository extends Repository<AnnexeEntity> {
     return await this.AnnexeRepository.findOne(annexeId);
   }
 
-  async created(annexeDto: AnnexeEntity) {
-    return await this.AnnexeRepository.save(annexeDto);
+  async created(data: AnnexeEntity) {
+    return await this.AnnexeRepository.save(data);
   }
 
-  async updated(annexeId: number, annexeDto: AnnexeEntity) {
-    return await this.AnnexeRepository.update(annexeId, annexeDto);
+  async updated(annexeId: number, data: AnnexeEntity) {
+    return await this.AnnexeRepository.update(annexeId, data);
   }
 
-  async deleted(annexeDto: AnnexeEntity) {
-    return await this.AnnexeRepository.remove(annexeDto);
+  async deleted(data: AnnexeEntity) {
+    return await this.AnnexeRepository.remove(data);
   }
 }

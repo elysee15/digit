@@ -1,7 +1,8 @@
 import {
   Injectable,
   InternalServerErrorException,
-  NotFoundException
+  NotFoundException,
+  ConflictException
 } from "@nestjs/common";
 import { BudgetRepository } from "./budget.repository";
 import { BudgetEntity } from "./budget.entity";
@@ -41,10 +42,11 @@ export class BudgetService {
     const budget = await this.budgetRepository.findById(budgetId);
     if (budget) {
       try {
-        return this.budgetRepository.deleted(budget);
+        return await this.budgetRepository.deleted(budget);
       } catch (e) {
-        throw new InternalServerErrorException(
-          "Impossible de supprimer car ce budget est en cours d'utilisation"
+        throw new ConflictException(
+          "Impossible de supprimer car ce budget est en cours d'utilisation",
+          "Foreign key constraint error"
         );
       }
     }

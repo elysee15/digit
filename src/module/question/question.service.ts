@@ -1,7 +1,8 @@
 import {
   Injectable,
   InternalServerErrorException,
-  NotFoundException
+  NotFoundException,
+  ConflictException
 } from "@nestjs/common";
 import { QuestionRepository } from "./question.repository";
 import { QuestionEntity } from "./question.entity";
@@ -41,10 +42,11 @@ export class QuestionService {
     const question = await this.questionRepository.findById(questionId);
     if (question) {
       try {
-        return this.questionRepository.deleted(question);
+        return await this.questionRepository.deleted(question);
       } catch (e) {
-        throw new InternalServerErrorException(
-          "Impossible de supprimer car cette question est en cours d'utilisation"
+        throw new ConflictException(
+          "Impossible de supprimer car cette question est en cours d'utilisation",
+          "Foreign key constraint error"
         );
       }
     }

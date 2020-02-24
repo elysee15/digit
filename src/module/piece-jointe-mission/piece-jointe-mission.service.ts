@@ -2,7 +2,8 @@ import {
   Injectable,
   HttpException,
   NotFoundException,
-  InternalServerErrorException
+  InternalServerErrorException,
+  ConflictException
 } from "@nestjs/common";
 import { PieceJointeMissionRepository } from "./piece-jointe-mission.repository";
 import { PieceJointeMissionEntity } from "./piece-jointe-mission.entity";
@@ -44,10 +45,11 @@ export class PieceJointeMissionService {
     const piece = await this.pieceJointeMissionRepository.findById(pieceId);
     if (piece) {
       try {
-        return this.pieceJointeMissionRepository.deleted(piece);
+        return await this.pieceJointeMissionRepository.deleted(piece);
       } catch (e) {
-        throw new InternalServerErrorException(
-          "Suppression impossible car piece jointe est en cours d'utilisation"
+        throw new ConflictException(
+          "Suppression impossible car piece jointe est en cours d'utilisation",
+          "Foreign key constraint error"
         );
       }
     }

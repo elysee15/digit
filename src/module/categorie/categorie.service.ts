@@ -2,7 +2,8 @@ import {
   Injectable,
   HttpException,
   NotFoundException,
-  InternalServerErrorException
+  InternalServerErrorException,
+  ConflictException
 } from "@nestjs/common";
 import { CategorieRepository } from "./categorie.repository";
 import { CategorieEntity } from "./categorie.entity";
@@ -42,10 +43,11 @@ export class CategorieService {
     const categorie = await this.categoryRepository.findById(categorieId);
     if (categorie) {
       try {
-        return this.categoryRepository.deleted(categorie);
+        return await this.categoryRepository.deleted(categorie);
       } catch (e) {
-        throw new InternalServerErrorException(
-          "Impossible de supprimer car cette categorie est en cours d'utilisation"
+        throw new ConflictException(
+          "Impossible de supprimer car cette categorie est en cours d'utilisation",
+          "Foreign key constraint error"
         );
       }
     }

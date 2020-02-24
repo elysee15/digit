@@ -1,7 +1,8 @@
 import {
   Injectable,
   InternalServerErrorException,
-  NotFoundException
+  NotFoundException,
+  ConflictException
 } from "@nestjs/common";
 import { OffreDeMissionRepository } from "./offre-de-mission.repository";
 import { OffreDeMissionEntity } from "./offre-de-mission.entity";
@@ -43,10 +44,11 @@ export class OffreDeMissionService {
     const offre = await this.offreDeMissionRepository.findById(id);
     if (offre) {
       try {
-        return this.offreDeMissionRepository.deleted(offre);
+        return await this.offreDeMissionRepository.deleted(offre);
       } catch (e) {
-        throw new InternalServerErrorException(
-          "Impossible de supprimer car cette offre est en cours d'utilisation"
+        throw new ConflictException(
+          "Impossible de supprimer car cette offre est en cours d'utilisation",
+          "Foreign key constraint error"
         );
       }
     }

@@ -2,7 +2,9 @@ import {
   Injectable,
   HttpException,
   NotFoundException,
-  InternalServerErrorException
+  InternalServerErrorException,
+  ConflictException,
+  HttpStatus
 } from "@nestjs/common";
 import { AnnexeRepository } from "./annexe.repository";
 import { AnnexeEntity } from "./annexe.entity";
@@ -42,10 +44,11 @@ export class AnnexeService {
     const annexe = await this.annexeRepository.findById(id);
     if (annexe) {
       try {
-        return this.annexeRepository.deleted(annexe);
-      } catch (e) {
-        throw new InternalServerErrorException(
-          "Impossible de supprimer car cet annexe est en cours d'utilisation"
+        return await this.annexeRepository.deleted(annexe);
+      } catch (error) {
+        throw new ConflictException(
+          "Impossible de supprimer car cet annexe est en cours d'utilisation", // message
+          "Foreign key constraint error" // error label
         );
       }
     }

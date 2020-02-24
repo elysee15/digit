@@ -1,7 +1,8 @@
 import {
   Injectable,
   InternalServerErrorException,
-  NotFoundException
+  NotFoundException,
+  ConflictException
 } from "@nestjs/common";
 import { ManagerRepository } from "./manager.repository";
 import { ManagerEntity } from "./manager.entity";
@@ -41,10 +42,11 @@ export class ManagerService {
     const manager = await this.managerRepository.findById(managerId);
     if (manager) {
       try {
-        return this.managerRepository.deleted(manager);
+        return await this.managerRepository.deleted(manager);
       } catch (e) {
-        throw new InternalServerErrorException(
-          "Impossible to delete because manager is in use"
+        throw new ConflictException(
+          "Impossible to delete because manager is in use",
+          "Foreign key constraint error"
         );
       }
     }

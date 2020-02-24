@@ -2,7 +2,8 @@ import {
   Injectable,
   HttpException,
   NotFoundException,
-  InternalServerErrorException
+  InternalServerErrorException,
+  ConflictException
 } from "@nestjs/common";
 import { FamilleDeMissionRepository } from "./famille-de-mission.repository";
 import { FamilleDeMissionEntity } from "./famille-de-mission.entity";
@@ -44,10 +45,11 @@ export class FamilleDeMissionService {
     const famille = await this.familleDeMissionRepository.findById(id);
     if (famille) {
       try {
-        return this.familleDeMissionRepository.deleted(famille);
+        return await this.familleDeMissionRepository.deleted(famille);
       } catch (e) {
-        throw new InternalServerErrorException(
-          "Impossible de supprimer car cette famille de mission est en cours d'utilisation"
+        throw new ConflictException(
+          "Impossible de supprimer car cette famille de mission est en cours d'utilisation",
+          "Foreign key constraint error"
         );
       }
     }

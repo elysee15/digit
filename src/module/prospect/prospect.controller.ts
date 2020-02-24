@@ -16,7 +16,7 @@ import { JsonView } from "../../helpers/utils/JsonView";
 import { ProspectService } from "./prospect.service";
 import { ProspectEntity } from "./prospect.entity";
 
-@Controller("prospect")
+@Controller("prospects")
 export class ProspectController {
   constructor(private readonly prospectService: ProspectService) {}
 

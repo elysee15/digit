@@ -1,7 +1,8 @@
 import {
   Injectable,
   InternalServerErrorException,
-  NotFoundException
+  NotFoundException,
+  ConflictException
 } from "@nestjs/common";
 import { PlaningRepository } from "./planing.repository";
 import { PlaningEntity } from "./planing.entity";
@@ -41,10 +42,11 @@ export class PlaningService {
     const planing = await this.planingRepository.findById(planingId);
     if (planing) {
       try {
-        return this.planingRepository.deleted(planing);
+        return await this.planingRepository.deleted(planing);
       } catch (e) {
-        throw new InternalServerErrorException(
-          "Impossible de supprimer car ce planing est en cours d'utilisation"
+        throw new ConflictException(
+          "Impossible de supprimer car ce planing est en cours d'utilisation",
+          "Foreign key constraint error"
         );
       }
     }

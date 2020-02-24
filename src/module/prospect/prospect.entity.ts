@@ -12,7 +12,8 @@ import {
   IsInt,
   IsAlphanumeric,
   IsString,
-  IsEnum
+  IsEnum,
+  IsOptional
 } from "class-validator";
 
 @Entity("prospect")

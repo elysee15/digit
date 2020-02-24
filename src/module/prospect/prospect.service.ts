@@ -1,7 +1,8 @@
 import {
   Injectable,
   InternalServerErrorException,
-  NotFoundException
+  NotFoundException,
+  ConflictException
 } from "@nestjs/common";
 import { ProspectRepository } from "./prospect.repository";
 import { ProspectEntity } from "./prospect.entity";
@@ -41,10 +42,11 @@ export class ProspectService {
     const prospect = await this.prospectRepository.findById(prospectId);
     if (prospect) {
       try {
-        return this.prospectRepository.deleted(prospect);
+        return await this.prospectRepository.deleted(prospect);
       } catch (e) {
-        throw new InternalServerErrorException(
-          "Impossible de supprimer car ce prospect est en cours d'utilisation"
+        throw new ConflictException(
+          "Impossible de supprimer car ce prospect est en cours d'utilisation",
+          "Foreign key constraint error"
         );
       }
     }
