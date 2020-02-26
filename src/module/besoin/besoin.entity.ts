@@ -10,26 +10,34 @@ import { Priorite } from "./besoin.priorite";
 import { ProspectionEntity } from "../prospection/prospection.entity";
 import { FamilleDeMissionEntity } from "../famille-de-mission/famille-de-mission.entity";
 import { ProjetDeMissionEntity } from "../projet-de-mission/projet-de-mission.entity";
-import { IsString, IsEnum } from "class-validator";
+import {
+  IsString,
+  IsEnum,
+  IsOptional,
+  MaxLength,
+  IsNotEmpty
+} from "class-validator";
 
 @Entity("besoin")
 export class BesoinEntity {
   @PrimaryGeneratedColumn()
   private id: number;
 
-  @IsString()
+  @IsNotEmpty({ message: "Le libellé est obligatoire" })
+  @MaxLength(191, { message: "Le nombre de caractère ne doit pas excéder 191" })
+  @IsString({ message: "Le libellé doit être de type string" })
   @Column({ type: "varchar", length: 191, nullable: true })
   private label: string;
 
-  @IsString()
+  /*   @IsString({message: "La description doit être de type string"}) */
   @Column({ type: "text", nullable: true })
   private description: string;
 
-  @IsString()
+  @IsOptional()
   @Column({ type: "varchar", length: 191, nullable: true })
   private tag: string;
 
-  @IsEnum(Status)
+  @IsEnum(Status, { message: "Le status doit être 'EN COURS' ou 'EN ATTENTE'" })
   @Column({
     type: "enum",
     enum: Status,
@@ -38,11 +46,12 @@ export class BesoinEntity {
   })
   private status: Status;
 
-  @IsString()
   @Column({ type: "text", nullable: true })
   private conclusion: string;
 
-  @IsEnum(Priorite)
+  @IsEnum(Priorite, {
+    message: "La priorité doit être 'Forte' 'Moyenne' 'Faible'"
+  })
   @Column({
     type: "enum",
     enum: Priorite,
@@ -61,7 +70,6 @@ export class BesoinEntity {
   @Column({ name: "created_by", type: "varchar", length: 100, nullable: true })
   private createdBy: string;
 
-  @IsString()
   @Column({ name: "updated_by", type: "varchar", length: 100, nullable: true })
   private updatedBy: string;
 
@@ -95,6 +103,13 @@ export class BesoinEntity {
   }
   public getCreatedAt(): Date {
     return this.createdAt;
+  }
+
+  public setPriorite(priorite: Priorite) {
+    this.priorite = priorite;
+  }
+  public getPriorie(): Priorite {
+    return this.priorite;
   }
 
   public setConclusion(conclusion: string) {

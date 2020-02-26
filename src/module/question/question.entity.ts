@@ -2,16 +2,21 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  CreateDateColumn
+  CreateDateColumn,
+  UpdateDateColumn
 } from "typeorm";
-import { IsString, IsDefined } from "class-validator";
+import { IsString, IsDefined, IsNotEmpty, MaxLength } from "class-validator";
 
 @Entity("question")
 export class QuestionEntity {
   @PrimaryGeneratedColumn()
   private id: number;
 
-  @IsString()
+  @IsNotEmpty({ message: "Le libellé est obligatoire" })
+  @IsString({ message: "Le libellé doit être de type string" })
+  @MaxLength(191, {
+    message: "Le libellé ne doit pas excéder plus de 191 caractère"
+  })
   @Column({ type: "varchar", length: 191, nullable: true })
   private label: string;
 
@@ -19,14 +24,13 @@ export class QuestionEntity {
   @Column({ type: "text", nullable: true })
   private response: string;
 
-  @IsString()
   @Column({ type: "text", nullable: true })
   private descriptif: string;
 
   @CreateDateColumn({ name: "created_at", nullable: true })
   private createdAt: Date;
 
-  @CreateDateColumn({ name: "updated_at", nullable: true })
+  @UpdateDateColumn({ name: "updated_at", nullable: true })
   private updatedAt: Date;
 
   @Column({ name: "created_by", type: "varchar", length: 100, nullable: true })

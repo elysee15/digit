@@ -29,7 +29,7 @@ export class AnnexeController {
     }
     return JsonView.dataResponse(
       annexe,
-      "Object was found with success",
+      "Object was found successfully",
       HttpStatus.OK
     );
   }
@@ -45,7 +45,7 @@ export class AnnexeController {
   }
 
   @Post()
-  public async postAnnexe(@Body(new ValidationPipe()) data) {
+  public async postAnnexe(@Body(new ValidationPipe({ transform: true })) data) {
     const annexe = await this.annexeService.creating(data);
     if (annexe) {
       return JsonView.dataResponse(

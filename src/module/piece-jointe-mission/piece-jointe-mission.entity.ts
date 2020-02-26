@@ -3,24 +3,26 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  ManyToOne
+  ManyToOne,
+  UpdateDateColumn
 } from "typeorm";
 import { ProjetDeMissionEntity } from "../projet-de-mission/projet-de-mission.entity";
-import { IsString } from "class-validator";
+import { IsString, IsNotEmpty } from "class-validator";
 
 @Entity("mission_attachements")
 export class PieceJointeMissionEntity {
   @PrimaryGeneratedColumn()
   private id: number;
 
-  @IsString()
+  @IsNotEmpty({ message: "Le libellé est obligatoire" })
+  @IsString({ message: "Le champs doit être de type string" })
   @Column({ type: "varchar", length: 191, nullable: true })
   private label: string;
 
   @CreateDateColumn({ name: "created_at", nullable: true })
   private createdAt: Date;
 
-  @CreateDateColumn({ name: "updated_at", nullable: true })
+  @UpdateDateColumn({ name: "updated_at", nullable: true })
   private updatedAt: Date;
 
   @Column({ name: "created_by", type: "varchar", length: 100, nullable: true })

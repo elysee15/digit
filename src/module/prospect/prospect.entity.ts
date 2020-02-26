@@ -3,7 +3,8 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  ManyToOne
+  ManyToOne,
+  UpdateDateColumn
 } from "typeorm";
 import { Status } from "./prospect.status";
 import { ManagerEntity } from "../manager/manager.entity";
@@ -13,7 +14,10 @@ import {
   IsAlphanumeric,
   IsString,
   IsEnum,
-  IsOptional
+  IsOptional,
+  IsNotEmpty,
+  Max,
+  Min
 } from "class-validator";
 
 @Entity("prospect")
@@ -26,10 +30,13 @@ export class ProspectEntity {
   private codeProspect: string;
 
   @IsInt()
+  @Min(1)
+  @Max(5)
   @Column({ type: "int", nullable: true })
   private typeSociete: number;
 
-  @IsString()
+  @IsNotEmpty({ message: "La raison sociale est obligatoire" })
+  @IsString({ message: "La raison sociale doit être de type string" })
   @Column({
     name: "raison_sociale",
     type: "varchar",
@@ -42,23 +49,19 @@ export class ProspectEntity {
   @Column({ type: "varchar", length: 191, nullable: true })
   private email: string;
 
-  @IsString()
   @Column({ type: "varchar", length: 191, nullable: true })
   private country: string;
 
-  @IsString()
   @Column({ type: "varchar", length: 191, nullable: true })
   private city: string;
 
-  @IsString()
   @Column({ type: "varchar", length: 100, nullable: true })
   private phone: string;
 
-  @IsString()
   @Column({ type: "varchar", length: 100, nullable: true })
   private acronym: string;
 
-  @IsEnum(Status)
+  @IsEnum(Status, { message: "Le status doit être EN ATTENTE ou EN COURS" })
   @Column({
     type: "enum",
     enum: Status,
@@ -70,7 +73,7 @@ export class ProspectEntity {
   @CreateDateColumn({ name: "created_at", nullable: true })
   private createdAt: Date;
 
-  @CreateDateColumn({ name: "updated_at", nullable: true })
+  @UpdateDateColumn({ name: "updated_at", nullable: true })
   private updatedAt: Date;
 
   @Column({ name: "created_by", type: "varchar", length: 100, nullable: true })

@@ -2,30 +2,31 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  CreateDateColumn
+  CreateDateColumn,
+  UpdateDateColumn
 } from "typeorm";
-import { IsString } from "class-validator";
+import { IsString, MaxLength, IsNotEmpty } from "class-validator";
 
 @Entity("budget")
 export class BudgetEntity {
   @PrimaryGeneratedColumn()
   private id: number;
 
-  @IsString()
+  @IsNotEmpty({ message: "Le libellé est obligatoire" })
+  @MaxLength(191, { message: "Le nombre de caractère ne doit pas excéder 191" })
+  @IsString({ message: "Le libellé doit être de type string" })
   @Column({ type: "text", nullable: true })
   private label: string;
 
   @CreateDateColumn({ name: "created_at", nullable: true })
   private createdAt: Date;
 
-  @CreateDateColumn({ name: "updated_at", nullable: true })
+  @UpdateDateColumn({ name: "updated_at", nullable: true })
   private updatedAt: Date;
 
-  @IsString()
   @Column({ name: "created_by", type: "varchar", length: 100, nullable: true })
   private createdBy: string;
 
-  @IsString()
   @Column({ name: "updated_by", type: "varchar", length: 100, nullable: true })
   private updatedBy: string;
 

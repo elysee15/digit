@@ -3,36 +3,39 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  ManyToOne
+  ManyToOne,
+  UpdateDateColumn
 } from "typeorm";
 import { AnnexeEntity } from "../annexe/annexe.entity";
 import { ProjetDeMissionEntity } from "../projet-de-mission/projet-de-mission.entity";
 import { PlaningEntity } from "../planing/planing.entity";
 import { BudgetEntity } from "../budget/budget.entity";
 import { Etat } from "./offre-de-mission.state";
-import { IsString, IsEnum } from "class-validator";
+import { IsEnum, IsNotEmpty, IsString } from "class-validator";
 
 @Entity("offre_de_mission")
 export class OffreDeMissionEntity {
   @PrimaryGeneratedColumn()
   private id: number;
 
-  @IsString()
+  @IsNotEmpty({ message: "Le contexte est obligatoire" })
+  @IsString({ message: "Le champs doit être de type string" })
   @Column({ type: "text", nullable: true })
   private context: string;
 
-  @IsString()
   @Column({ type: "text", nullable: true })
   private methodology: string;
 
-  @IsEnum(Etat)
+  @IsEnum(Etat, {
+    message: "L'etat doit être 'A envoyer' ou 'A ne pas envoyer'"
+  })
   @Column({ type: "enum", enum: Etat, default: Etat.TO_SEND, nullable: true })
   private state: Etat;
 
   @CreateDateColumn({ name: "created_at", nullable: true })
   private createdAt: Date;
 
-  @CreateDateColumn({ name: "updated_at", nullable: true })
+  @UpdateDateColumn({ name: "updated_at", nullable: true })
   private updatedAt: Date;
 
   @Column({ name: "created_by", type: "varchar", length: 100, nullable: true })

@@ -2,28 +2,31 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  CreateDateColumn
+  CreateDateColumn,
+  UpdateDateColumn
 } from "typeorm";
 import { Status, Etat } from "./projet-de-mission.model";
-import { IsString, IsEnum } from "class-validator";
+import { IsString, IsEnum, IsNotEmpty } from "class-validator";
 
 @Entity("projet_de_mission")
 export class ProjetDeMissionEntity {
   @PrimaryGeneratedColumn()
   private id: number;
 
-  @IsString()
+  @IsNotEmpty({ message: "Le libellé est obligatoire" })
+  @IsString({ message: "Le contexte doit être de type string" })
   @Column({ type: "text", nullable: true })
   private context: string;
 
-  @IsString()
   @Column({ type: "text", nullable: true })
   private methodology: string;
 
   @Column({ type: "text", nullable: true })
   private summary: string;
 
-  @IsEnum(Status)
+  @IsEnum(Status, {
+    message: "Le status doit être de 'En attente' ou 'En cours'"
+  })
   @Column({
     type: "enum",
     enum: Status,
@@ -32,14 +35,16 @@ export class ProjetDeMissionEntity {
   })
   private status: Status;
 
-  @IsEnum(Etat)
+  @IsEnum(Etat, {
+    message: "L'état doit être 'A envoyer' ou 'A ne pas envoyer'"
+  })
   @Column({ type: "enum", enum: Etat, default: Etat.TO_SEND, nullable: true })
   private etat: Etat;
 
   @CreateDateColumn({ name: "created_at", nullable: true })
   private createdAt: Date;
 
-  @CreateDateColumn({ name: "updated_at", nullable: true })
+  @UpdateDateColumn({ name: "updated_at", nullable: true })
   private updatedAt: Date;
 
   @Column({ name: "created_by", type: "varchar", length: 100, nullable: true })

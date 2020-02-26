@@ -2,23 +2,26 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  CreateDateColumn
+  CreateDateColumn,
+  UpdateDateColumn
 } from "typeorm";
-import { IsString } from "class-validator";
+import { IsString, IsNotEmpty, MaxLength } from "class-validator";
 
 @Entity("mission_family")
 export class FamilleDeMissionEntity {
   @PrimaryGeneratedColumn()
   private id: number;
 
-  @IsString()
+  @IsNotEmpty({ message: "Le libellé est obligatoire" })
+  @MaxLength(191, { message: "Le nombre de caractère ne doit pas excéder 191" })
+  @IsString({ message: "Le libellé doit être de type string" })
   @Column({ type: "varchar", length: 100, nullable: true })
-  private libelle: string;
+  private label: string;
 
   @CreateDateColumn({ name: "created_at", nullable: true })
   private createdAt: Date;
 
-  @CreateDateColumn({ name: "updated_at", nullable: true })
+  @UpdateDateColumn({ name: "updated_at", nullable: true })
   private updatedAt: Date;
 
   @Column({ name: "created_by", type: "varchar", length: 100, nullable: true })
@@ -37,10 +40,10 @@ export class FamilleDeMissionEntity {
   }
 
   public setLibelle(libelle: string) {
-    this.libelle = libelle;
+    this.label = libelle;
   }
   public getLibelle(): string {
-    return this.libelle;
+    return this.label;
   }
 
   public setCreatedAt(createdAt: Date) {

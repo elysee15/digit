@@ -3,28 +3,33 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  ManyToOne
+  ManyToOne,
+  UpdateDateColumn
 } from "typeorm";
 import { ProspectionEntity } from "../prospection/prospection.entity";
-import { IsString, IsNotEmpty, IsDefined } from "class-validator";
+import { IsString, IsNotEmpty, IsDefined, MaxLength } from "class-validator";
 
 @Entity("questionnaire")
 export class QuestionnaireEntity {
   @PrimaryGeneratedColumn()
   private id: number;
 
-  @IsString()
+  @IsNotEmpty({ message: "Le libellé est obligatoire" })
+  @IsString({ message: "Le libellé doit être de type string" })
+  @MaxLength(191, {
+    message: "Le nombre de caractère ne doit pas excéder plus de 191"
+  })
   @Column({ type: "varchar", length: 191, nullable: true })
   private label: string;
 
-  @IsString()
+  @IsString({ message: "Le champs doit être de type string" })
   @Column({ type: "text", nullable: true })
   private conclusion: string;
 
   @CreateDateColumn({ name: "created_at", nullable: true })
   private createdAt: Date;
 
-  @CreateDateColumn({ name: "updated_at", nullable: true })
+  @UpdateDateColumn({ name: "updated_at", nullable: true })
   private updatedAt: Date;
 
   @Column({ name: "created_by", type: "varchar", length: 100, nullable: true })

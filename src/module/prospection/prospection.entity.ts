@@ -3,18 +3,20 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  ManyToOne
+  ManyToOne,
+  UpdateDateColumn
 } from "typeorm";
 import { Status, Type } from "./prospection.status";
 import { ProspectEntity } from "../prospect/prospect.entity";
-import { IsAlphanumeric, IsString, IsEnum } from "class-validator";
+import { IsAlphanumeric, IsString, IsEnum, IsNotEmpty } from "class-validator";
 
 @Entity("prospection")
 export class ProspectionEntity {
   @PrimaryGeneratedColumn()
   private id: number;
 
-  @IsString()
+  @IsNotEmpty({ message: "Le libellé est obligatoire" })
+  @IsString({ message: "Le libelle doit être de type string" })
   @Column({ type: "varchar", length: 191, nullable: true })
   private label: string;
 
@@ -27,7 +29,7 @@ export class ProspectionEntity {
   })
   private codeProspection: string;
 
-  @IsEnum(Status)
+  @IsEnum(Status, { message: "Le status doit être EN COURS ou EN ATTENTE" })
   @Column({
     type: "enum",
     enum: Status,
@@ -36,14 +38,15 @@ export class ProspectionEntity {
   })
   private status: Status;
 
-  @IsEnum(Type)
+  @IsNotEmpty({ message: "Le type est obligatoire" })
+  @IsEnum(Type, { message: "Le type doit être PROSPECT ou CLIENT" })
   @Column({ type: "enum", enum: Type, default: Type.PROSPECT, nullable: true })
   private type: Type;
 
   @CreateDateColumn({ name: "created_at", nullable: true })
   private createdAt: Date;
 
-  @CreateDateColumn({ name: "updated_at", nullable: true })
+  @UpdateDateColumn({ name: "updated_at", nullable: true })
   private updatedAt: Date;
 
   @Column({ name: "created_by", type: "varchar", length: 100, nullable: true })
