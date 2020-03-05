@@ -2,7 +2,6 @@ import {
   Injectable,
   HttpException,
   NotFoundException,
-  InternalServerErrorException,
   ConflictException,
   HttpStatus
 } from "@nestjs/common";
@@ -14,7 +13,7 @@ export class AnnexeService {
   constructor(private readonly annexeRepository: AnnexeRepository) {}
 
   async getAll() {
-    return await this.annexeRepository.findAll();
+     return await this.annexeRepository.findAll();
   }
 
   async getById(id: number) {
@@ -26,7 +25,7 @@ export class AnnexeService {
   }
 
   async creating(annexe: AnnexeEntity) {
-    return await this.annexeRepository.created(annexe);
+     return await this.annexeRepository.created(annexe);
   }
 
   async updating(annexeId: number, data: AnnexeEntity) {

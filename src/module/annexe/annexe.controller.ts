@@ -8,12 +8,10 @@ import {
   Post,
   HttpException,
   Delete,
-  UsePipes,
   ValidationPipe,
   ParseIntPipe,
-  NotFoundException
 } from "@nestjs/common";
-import { JsonView } from "src/helpers/utils/JsonView";
+import { JsonView } from "../../helpers/utils/JsonView";
 import { AnnexeService } from "./annexe.service";
 import { AnnexeEntity } from "./annexe.entity";
 
